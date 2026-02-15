@@ -1,0 +1,89 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+\usecolortheme{whale}
+
+\title[UAV Master Hub Fortress]{Autonomous Thermal-Imaging Hexacopter for Precision Agriculture in Bihar}
+\subtitle{PhD Defense Presentation: Level 2/3 Validation}
+\author[Abhishek Raj]{Abhishek Raj \\ \small PhD Candidate}
+\institute[Bihar Tech]{Department of Robotics and Autonomous Systems \\ University of Bihar}
+\date{February 15, 2026}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{1. Project Motivation: The Bihar Problem}
+\begin{itemize}
+    \item \textbf{Commercial Barrier}: DJI M300 costs > ₹6.5L.
+    \item \textbf{Agricultural Stress}: Late-stage blight detection in Bihar's maize farms.
+    \item \textbf{Technical Gap}: Lack of offline, edge AI solutions for remote areas.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{2. The Solution: UAV Master Hub Fortress}
+\begin{block}{The Fortress Architecture}
+    A 100\% reproducible, containerized ecosystem (Docker) featuring a "Golden Vault" that ensures code integrity and Wayland-X11 bridge for GUI scaling.
+\end{block}
+\begin{itemize}
+    \item \textbf{Foundation}: `/shared_libs` (PX4-ROS 2 Bridge)
+    \item \textbf{Dimensions}: `/projects` (Indra-Eye, Thermal-Hexacopter)
+    \item \textbf{Integrity}: Read-Only Shield for core research data.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{3. Technical Achievement: AI Performance}
+\begin{itemize}
+    \item \textbf{Model}: MobileNetV2 with Custom Thermal Clustering.
+    \item \textbf{F1-Score}: \textbf{91.9\%} (Validated on Bihar Farm World).
+    \item \textbf{Latency}: \textbf{45ms} (Real-time edge inference).
+    \item \textbf{Benefit}: Zero cloud dependency.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{4. Mission Validation: The Maiden Voyage}
+\begin{itemize}
+    \item \textbf{Task}: Autonomous 7-Waypoint Zig-Zag Survey.
+    \item \textbf{Stability}: Altitude variance maintained within ±0.06m.
+    \item \textbf{Outcome}: 100% mission success rate in high-fidelity simulation.
+    \item \textbf{Physical Parity}: Telemetry matches target flight dynamics with high precision.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{5. Socioeconomic Impact}
+\begin{table}
+\centering
+\begin{tabular}{|l|c|r|}
+\hline
+Metric & Commercial & Our System \\
+\hline
+Total Cost & ₹6,50,000 & ₹1,28,900 \\
+Accuracy & 85\% & 91.9\% \\
+Maintenance & High (Proprietary) & Low (Open-Source) \\
+\hline
+\end{tabular}
+\end{table}
+\begin{itemize}
+    \item \textbf{Payback Period}: < 1 Year for a 10-farmer cooperative.
+    \item \textbf{Contribution}: Democratizing precision tech for smallholders.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{6. Future Roadmap: V4 and V5}
+\begin{itemize}
+    \item \textbf{V4: GPS-Denied Navigation}: Activating Visual Odometry for cluttered environments using $indra\_eye$.
+    \item \textbf{V5: Autonomous Swarms}: Multi-drone collaboration for large-scale village surveying.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Final Conclusion}
+\centering
+\Large \textbf{Thesis Status: Validated} \\
+\vspace{1em}
+\small Physically Parity-Validated | Gold Vault v4.0 Sealed \\
+\vspace{2em}
+\textbf{Jai Hind! \includegraphics[height=1em]{india_flag_icon.png}}
+\end{frame}
+
+\end{document}
