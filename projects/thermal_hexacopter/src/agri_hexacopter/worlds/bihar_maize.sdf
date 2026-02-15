@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="bihar_maize_farm">
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sun</uri>
+    </include>
+
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Ground Plane</uri>
+    </include>
+
+    <physics name="default_physics" default="true" type="ode">
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <model name="maize_row_1">
+      <pose>5 0 0.5 0 0 0</pose> <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>10 0.5 1.0</size> </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>10 0.5 1.0</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Green</name> </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="maize_row_2">
+      <pose>5 3 0.5 0 0 0</pose> <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>10 0.5 1.0</size></box></geometry>
+          <material><script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Green</name>
+          </script></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="landing_pad">
+      <pose>0 0 0.05 0 0 0</pose>
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry><cylinder><radius>0.5</radius><length>0.1</length></cylinder></geometry>
+          <material><script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Red</name>
+          </script></material>
+        </visual>
+      </link>
+    </model>
+
+    <include>
+      <uri>model://agri_hexacopter_drone</uri>
+      <name>agri_hexacopter_drone</name>
+      <pose>0 0 0.5 0 0 0</pose>
+    </include>
+  </world>
+</sdf>

@@ -1,0 +1,118 @@
+name: PhD Thermal Hexacopter CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-22.04
+    
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov pytest-mock
+          pip install numpy opencv-python
+          pip install rclpy sensor-msgs cv-bridge || echo "ROS packages skipped (not required for unit tests)"
+      
+      - name: Run unit tests
+        run: |
+          cd projects/thermal_hexacopter
+          pytest src/agri_hexacopter/tests/ \
+            -v \
+            --tb=short \
+            --cov=agri_hexacopter \
+            --cov-report=term-missing \
+            --cov-report=xml \
+            -m "not hardware and not integration"
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./projects/thermal_hexacopter/coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+  
+  lint:
+    name: Code Quality Checks
+    runs-on: ubuntu-22.04
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      
+      - name: Install linting tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 black pylint
+      
+      - name: Check code formatting with Black
+        run: |
+          black --check projects/thermal_hexacopter/src/agri_hexacopter/ || true
+      
+      - name: Lint with flake8
+        run: |
+          flake8 projects/thermal_hexacopter/src/agri_hexacopter/ \
+            --count \
+            --select=E9,F63,F7,F82 \
+            --show-source \
+            --statistics || true
+          flake8 projects/thermal_hexacopter/src/agri_hexacopter/ \
+            --count \
+            --exit-zero \
+            --max-complexity=10 \
+            --max-line-length=127 \
+            --statistics || true
+  
+  build-docs:
+    name: Build Documentation
+    runs-on: ubuntu-22.04
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      
+      - name: Install documentation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install sphinx sphinx-rtd-theme myst-parser
+      
+      - name: Build Sphinx documentation
+        run: |
+          cd projects/thermal_hexacopter/docs
+          sphinx-build -b html source build/html || echo "Sphinx docs not yet configured"
+      
+      - name: Upload documentation artifacts
+        uses: actions/upload-artifact@v3
+        if: success()
+        with:
+          name: documentation
+          path: projects/thermal_hexacopter/docs/build/html/

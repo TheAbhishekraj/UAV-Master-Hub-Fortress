@@ -1,0 +1,5 @@
+/mission_control_node:
+  ros__parameters:
+    flight_altitude: 3.0
+    farm_location: "Jamalpur"
+    spray_duration: 5.0

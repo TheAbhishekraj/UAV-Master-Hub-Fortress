@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  indra_eye_hitl:
+    image: hexacopter_lab_golden:latest
+    container_name: indra_eye_hitl
+
+    # Hardware device access
+    devices:
+      - /dev/video0:/dev/video0 # RealSense camera
+      - /dev/video1:/dev/video1 # RealSense camera (additional streams)
+      - /dev/ttyUSB0:/dev/ttyUSB0 # u-blox F9P GNSS
+      - /dev/i2c-1:/dev/i2c-1 # I2C bus (if needed)
+
+    # Volume mounts
+    volumes:
+      - /home/abhishek/thermal_hexacopter_project/indra_eye_project:/home/user/indra_eye_project
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /dev/bus/usb:/dev/bus/usb
+      - /dev/shm:/dev/shm
+
+    # Network configuration (host mode for Livox Ethernet LiDAR)
+    network_mode: host
+
+    # Privileged mode for hardware access
+    privileged: true
+
+    # Environment variables
+    environment:
+      - DISPLAY=${DISPLAY}
+      - ROS_DOMAIN_ID=42
+      - HARDWARE_CONFIG=/home/user/indra_eye_project/config/hardware_map.yaml
+      - CUDA_VISIBLE_DEVICES=0
+      - LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.docker.xauth
+
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 6G
+          cpus: '5.0'
+        reservations:
+          memory: 4G
+          cpus: '3.0'
+
+    # Startup command
+    command: >
+      bash -c "
+        echo 'Indra-Eye HITL Container Starting...' &&
+        source /opt/ros/humble/setup.bash &&
+        cd /home/user/indra_eye_project &&
+        source install/setup.bash &&
+        echo 'Configuring network for Livox LiDAR...' &&
+        ifconfig eth0 192.168.1.100 netmask 255.255.255.0 up || true &&
+        route add -net 192.168.1.0 netmask 255.255.255.0 dev eth0 || true &&
+        echo 'Launching HITL mission stack...' &&
+        bash run_mission.sh --hitl
+      "
+
+    # Keep container running
+    stdin_open: true
+    tty: true

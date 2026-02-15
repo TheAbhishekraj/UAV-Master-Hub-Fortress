@@ -1,0 +1,315 @@
+# Jetson Orin Nano Hardware Configuration for Indra-Eye HITL
+# This file maps physical sensors to ROS 2 topics and Docker devices
+
+hardware:
+  platform: jetson_orin_nano
+  architecture: aarch64
+  ros_distro: humble
+  cuda_version: "11.4"
+  
+  # System resources
+  cpu_cores: 6
+  gpu_cores: 1024
+  ram_gb: 8
+  
+  # Power mode (0=max performance, 1=balanced, 2=low power)
+  power_mode: 0
+
+# ============================================================================
+# Sensor Configuration
+# ============================================================================
+
+sensors:
+  # Livox Mid-360 LiDAR
+  lidar:
+    enabled: true
+    model: livox_mid360
+    interface: ethernet
+    connection:
+      ip_address: 192.168.1.10
+      port: 56000
+      subnet_mask: 255.255.255.0
+    
+    ros2:
+      package: livox_ros_driver2
+      node_name: livox_lidar_publisher
+      frame_id: livox_frame
+      topic: /livox/lidar
+      point_cloud_topic: /livox/lidar_pointcloud
+      imu_topic: /livox/imu  # Livox has built-in IMU
+    
+    parameters:
+      publish_freq: 10  # Hz
+      xfer_format: 1    # 0=pointcloud2, 1=custom
+      multi_topic: 0    # Single topic mode
+      data_src: 0       # Real-time mode
+      
+    calibration:
+      # Transform from base_link to lidar
+      x: 0.15   # Forward 15cm
+      y: 0.0    # Centered
+      z: 0.10   # Up 10cm
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+  
+  # Intel RealSense D435i Stereo Camera
+  camera:
+    enabled: true
+    model: realsense_d435i
+    interface: usb3
+    connection:
+      device_path: /dev/video0
+      serial_number: auto  # Auto-detect
+      usb_port_id: "1-2"   # USB port identifier
+    
+    ros2:
+      package: realsense2_camera
+      node_name: realsense_camera
+      frame_id: camera_link
+      
+      topics:
+        depth: /camera/depth/image_rect_raw
+        depth_info: /camera/depth/camera_info
+        color: /camera/color/image_raw
+        color_info: /camera/color/camera_info
+        infra1: /camera/infra1/image_rect_raw
+        infra2: /camera/infra2/image_rect_raw
+        imu_accel: /camera/accel/sample
+        imu_gyro: /camera/gyro/sample
+        imu_combined: /camera/imu
+    
+    parameters:
+      depth_width: 640
+      depth_height: 480
+      depth_fps: 30
+      color_width: 640
+      color_height: 480
+      color_fps: 30
+      enable_infra1: true
+      enable_infra2: true
+      enable_accel: true
+      enable_gyro: true
+      unite_imu_method: "linear_interpolation"
+      
+    calibration:
+      # Transform from base_link to camera
+      x: 0.10   # Forward 10cm
+      y: 0.0    # Centered
+      z: 0.05   # Up 5cm
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+  
+  # u-blox F9P GNSS Receiver (PPP-AR capable)
+  gnss:
+    enabled: true
+    model: ublox_f9p
+    interface: serial
+    connection:
+      device_path: /dev/ttyUSB0
+      baud_rate: 115200
+      parity: none
+      stop_bits: 1
+      flow_control: none
+    
+    ros2:
+      package: ublox_gps
+      node_name: ublox_gps_node
+      frame_id: gnss_link
+      
+      topics:
+        fix: /ublox/fix
+        fix_velocity: /ublox/fix_velocity
+        navpvt: /ublox/navpvt
+        navsat: /ublox/navsat
+    
+    parameters:
+      device: /dev/ttyUSB0
+      frame_id: gnss_link
+      rate: 10  # Hz
+      enable_ppp: true  # Enable PPP-AR
+      enable_sbas: false
+      enable_galileo: true
+      enable_glonass: true
+      enable_beidou: true
+      
+    calibration:
+      # Transform from base_link to GNSS antenna
+      x: 0.0    # Centered
+      y: 0.0    # Centered
+      z: 0.20   # Up 20cm (antenna on top)
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+  
+  # Standalone IMU (MPU-9250) - Optional if not using RealSense IMU
+  imu:
+    enabled: false  # Disabled (using RealSense IMU)
+    model: mpu9250
+    interface: i2c
+    connection:
+      i2c_bus: 1
+      i2c_address: 0x68
+    
+    ros2:
+      package: mpu9250_driver
+      node_name: mpu9250_imu
+      frame_id: imu_link
+      topic: /imu/data
+    
+    parameters:
+      publish_rate: 400  # Hz
+      accel_range: 16    # ±16g
+      gyro_range: 2000   # ±2000 deg/s
+      
+    calibration:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+
+# ============================================================================
+# Docker Configuration for HITL
+# ============================================================================
+
+docker:
+  # Device mappings (host:container)
+  devices:
+    - /dev/video0:/dev/video0          # RealSense camera
+    - /dev/video1:/dev/video1          # RealSense camera (additional)
+    - /dev/ttyUSB0:/dev/ttyUSB0        # GNSS receiver
+    - /dev/i2c-1:/dev/i2c-1            # I2C bus (if using standalone IMU)
+    - /dev/bus/usb:/dev/bus/usb        # USB devices (for RealSense)
+  
+  # Volume mounts
+  volumes:
+    - ./indra_eye_project:/home/user/indra_eye_project
+    - /tmp/.X11-unix:/tmp/.X11-unix    # X11 for GUI
+    - /dev/shm:/dev/shm                # Shared memory
+  
+  # Network configuration
+  network_mode: host  # Required for Livox Ethernet LiDAR
+  
+  # Privileges
+  privileged: true  # Required for hardware access
+  
+  # Environment variables
+  environment:
+    - DISPLAY=${DISPLAY}
+    - ROS_DOMAIN_ID=42
+    - HARDWARE_CONFIG=/home/user/indra_eye_project/config/hardware_map.yaml
+    - CUDA_VISIBLE_DEVICES=0
+    - LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
+  
+  # Resource limits
+  resources:
+    memory: 6G
+    cpus: 5.0
+
+# ============================================================================
+# Network Configuration (for Livox LiDAR)
+# ============================================================================
+
+network:
+  # Static IP for Jetson (to communicate with Livox)
+  jetson_ip: 192.168.1.100
+  netmask: 255.255.255.0
+  
+  # Livox LiDAR IP
+  lidar_ip: 192.168.1.10
+  
+  # Setup command (run before launching)
+  setup_command: |
+    sudo ifconfig eth0 192.168.1.100 netmask 255.255.255.0 up
+    sudo route add -net 192.168.1.0 netmask 255.255.255.0 dev eth0
+
+# ============================================================================
+# Calibration Files
+# ============================================================================
+
+calibration:
+  # Camera-IMU calibration (for VIO)
+  camera_imu_calib: /home/user/indra_eye_project/config/calib/realsense_imu_calib.yaml
+  
+  # LiDAR-Camera calibration (for sensor fusion)
+  lidar_camera_calib: /home/user/indra_eye_project/config/calib/livox_realsense_calib.yaml
+  
+  # GNSS antenna offset
+  gnss_offset: /home/user/indra_eye_project/config/calib/gnss_offset.yaml
+
+# ============================================================================
+# Launch Configuration
+# ============================================================================
+
+launch:
+  # Sensor drivers to launch
+  drivers:
+    - livox_ros_driver2
+    - realsense2_camera
+    - ublox_gps
+  
+  # Indra-Eye nodes
+  indra_eye_nodes:
+    - es_ekf_node
+    - supervisor_node
+    - mavros_bridge_node
+    - path_aggregator_node
+  
+  # Visualization
+  visualization:
+    - rviz2
+  
+  # Optional
+  optional:
+    - qgroundcontrol  # Launch QGC automatically
+
+# ============================================================================
+# Logging
+# ============================================================================
+
+logging:
+  # ROS 2 bag recording
+  rosbag:
+    enabled: true
+    topics:
+      - /livox/lidar
+      - /camera/depth/image_rect_raw
+      - /camera/color/image_raw
+      - /camera/imu
+      - /ublox/fix
+      - /indra_eye/fused_odom
+      - /indra_eye/navigation_mode
+      - /indra_eye/spoofing_detected
+    
+    output_dir: /home/user/indra_eye_project/logs/rosbags
+    max_bag_size_mb: 2048  # 2GB per bag file
+  
+  # Console logging
+  console_log_level: INFO  # DEBUG, INFO, WARN, ERROR
+
+# ============================================================================
+# Safety Limits
+# ============================================================================
+
+safety:
+  # Maximum altitude (meters)
+  max_altitude: 100.0
+  
+  # Maximum horizontal distance from home (meters)
+  max_horizontal_distance: 500.0
+  
+  # Minimum battery voltage (volts)
+  min_battery_voltage: 14.0
+  
+  # Emergency stop trigger
+  emergency_stop_on_sensor_loss: true
+  
+  # Sensor timeout thresholds (seconds)
+  sensor_timeouts:
+    gnss: 5.0
+    lidar: 2.0
+    camera: 1.0
+    imu: 0.5

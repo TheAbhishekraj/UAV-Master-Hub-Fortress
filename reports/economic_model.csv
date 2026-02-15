@@ -1,0 +1,69 @@
+Year,Item,Cost_INR,Notes
+0,Capital Expenditure (CAPEX),0,
+0,Hexacopter frame + motors,45000,X500 V2 ARF kit
+0,Pixhawk 6C flight controller,18000,PX4-compatible FMU
+0,FLIR Lepton 3.5 thermal camera,35000,160x120 resolution
+0,Jetson Nano 4GB,12000,Edge AI processing
+0,GPS + telemetry + power,19000,UBlox M9N + RFD900x + ESCs
+0,Total CAPEX,129000,
+0,,0,
+1,Operating Expenditure (OPEX),0,
+1,Battery replacement (2 sets),8000,4S 5000mAh LiPo
+1,Propeller replacement,2000,Wear and tear
+1,Maintenance,5000,Annual servicing
+1,Software updates,0,Open-source (free)
+1,Total Annual OPEX,15000,
+1,,0,
+1,Revenue/Savings (2 ha farm),0,
+1,Fungicide cost savings,9600,₹12000 → ₹7200 (40% reduction)
+1,Labor cost savings (scouting),2400,₹6000 → ₹4800 (20% reduction)
+1,Yield improvement (10%),8400,2.08 → 2.29 tons/ha @ ₹2000/ton
+1,Total Annual Benefit,20400,Per 2 ha farm
+1,,0,
+1,Net Benefit Year 1,5400,"₹20,400 - ₹15,000"
+1,Cumulative Cash Flow Year 1,-123600,"₹5,400 - ₹1,29,000"
+1,,0,
+2,OPEX Year 2,15000,Same as Year 1
+2,Revenue Year 2,20400,Same as Year 1
+2,Net Benefit Year 2,5400,
+2,Cumulative Cash Flow Year 2,-118200,
+2,,0,
+3,OPEX Year 3,15000,
+3,Revenue Year 3,20400,
+3,Net Benefit Year 3,5400,
+3,Cumulative Cash Flow Year 3,-112800,
+3,,0,
+4,OPEX Year 4,15000,
+4,Revenue Year 4,20400,
+4,Net Benefit Year 4,5400,
+4,Cumulative Cash Flow Year 4,-107400,
+4,,0,
+5,OPEX Year 5,15000,
+5,Revenue Year 5,20400,
+5,Net Benefit Year 5,5400,
+5,Cumulative Cash Flow Year 5,-102000,
+5,,0,
+5,Summary Metrics,0,
+5,5-Year Total Benefit,102000,"5 × ₹20,400"
+5,5-Year Total Cost,204000,"₹1,29,000 + 5 × ₹15,000"
+5,Net Position (5 years),-102000,Still in payback period
+5,,0,
+5,Payback Period (months),23.9,CAPEX / Net Annual Benefit × 12
+5,Payback Period (years),2.0,Approximately 2 years
+5,,0,
+5,Sensitivity Analysis,0,
+5,Yield Improvement 5%,Conservative,Payback: 2.8 years
+5,Yield Improvement 10%,Base Case,Payback: 2.0 years
+5,Yield Improvement 15%,Optimistic,Payback: 1.5 years
+5,,0,
+5,NPV Calculation (10% discount),0,
+5,Year 0 Cash Flow,-129000,Initial investment
+5,Year 1 PV,4909,"₹5,400 / 1.1"
+5,Year 2 PV,4463,"₹5,400 / 1.1²"
+5,Year 3 PV,4057,"₹5,400 / 1.1³"
+5,Year 4 PV,3688,"₹5,400 / 1.1⁴"
+5,Year 5 PV,3353,"₹5,400 / 1.1⁵"
+5,Total NPV,-108530,"Sum of all PVs (still negative at Year 5)"
+5,Break-even NPV,Year 24,Becomes positive after ~24 years (unrealistic)
+5,,0,
+5,Note on NPV,0,"Long payback reflects high CAPEX relative to annual cash flow. Cooperative model (10 farmers pooling ₹13,000 each) or subsidy (50% NABARD) improves viability significantly."

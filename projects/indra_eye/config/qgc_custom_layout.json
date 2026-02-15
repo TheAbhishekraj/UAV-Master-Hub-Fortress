@@ -1,0 +1,207 @@
+# QGroundControl Custom Dashboard Configuration
+# This file defines the custom widget layout for Indra-Eye sensor health monitoring
+
+{
+    "version": 1,
+    "name": "Indra-Eye Mission Dashboard",
+    "description": "Custom QGC dashboard for GPS-denied navigation monitoring",
+    "widgets": [
+        {
+            "type": "primary_flight_display",
+            "position": {
+                "x": 0,
+                "y": 0,
+                "width": 400,
+                "height": 400
+            },
+            "config": {
+                "show_attitude": true,
+                "show_altitude": true,
+                "show_speed": true,
+                "show_heading": true
+            }
+        },
+        {
+            "type": "sensor_health_panel",
+            "position": {
+                "x": 410,
+                "y": 0,
+                "width": 300,
+                "height": 200
+            },
+            "config": {
+                "title": "Indra-Eye Sensor Health",
+                "sensors": [
+                    {
+                        "name": "GNSS",
+                        "topic": "/mavros/statustext/recv",
+                        "healthy_pattern": "GNSS_HEALTHY",
+                        "degraded_pattern": "VIO_FALLBACK",
+                        "failed_pattern": "SLAM_MODE",
+                        "color_healthy": "#00FF00",
+                        "color_degraded": "#FFFF00",
+                        "color_failed": "#FF0000"
+                    },
+                    {
+                        "name": "VIO",
+                        "topic": "/mavros/statustext/recv",
+                        "healthy_pattern": "VIO.*tracking",
+                        "failed_pattern": "VIO.*lost",
+                        "color_healthy": "#00FF00",
+                        "color_failed": "#FF0000"
+                    },
+                    {
+                        "name": "LiDAR SLAM",
+                        "topic": "/mavros/statustext/recv",
+                        "healthy_pattern": "SLAM.*localized",
+                        "degraded_pattern": "SLAM.*mapping",
+                        "failed_pattern": "SLAM.*lost",
+                        "color_healthy": "#00FF00",
+                        "color_degraded": "#FFFF00",
+                        "color_failed": "#FF0000"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "navigation_mode_indicator",
+            "position": {
+                "x": 410,
+                "y": 210,
+                "width": 300,
+                "height": 80
+            },
+            "config": {
+                "title": "Navigation Mode",
+                "topic": "/mavros/statustext/recv",
+                "modes": [
+                    {
+                        "name": "GNSS_HEALTHY",
+                        "display": "GNSS Mode",
+                        "color": "#00FF00",
+                        "icon": "satellite"
+                    },
+                    {
+                        "name": "VIO_FALLBACK",
+                        "display": "VIO Mode",
+                        "color": "#FFFF00",
+                        "icon": "camera"
+                    },
+                    {
+                        "name": "SLAM_MODE",
+                        "display": "SLAM Mode",
+                        "color": "#FFA500",
+                        "icon": "radar"
+                    },
+                    {
+                        "name": "EMERGENCY",
+                        "display": "EMERGENCY",
+                        "color": "#FF0000",
+                        "icon": "warning"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "alert_banner",
+            "position": {
+                "x": 0,
+                "y": 410,
+                "width": 710,
+                "height": 60
+            },
+            "config": {
+                "title": "Spoofing Alert",
+                "topic": "/mavros/statustext/recv",
+                "trigger_pattern": "GPS SPOOFING DETECTED",
+                "alert_color": "#FF0000",
+                "flash_rate_hz": 2,
+                "audio_alert": true,
+                "priority": "critical"
+            }
+        },
+        {
+            "type": "map_display",
+            "position": {
+                "x": 0,
+                "y": 480,
+                "width": 710,
+                "height": 400
+            },
+            "config": {
+                "center_on_vehicle": true,
+                "show_trajectory": true,
+                "trajectory_length": 1000,
+                "show_waypoints": true,
+                "show_home": true
+            }
+        },
+        {
+            "type": "telemetry_panel",
+            "position": {
+                "x": 720,
+                "y": 0,
+                "width": 280,
+                "height": 880
+            },
+            "config": {
+                "fields": [
+                    {
+                        "name": "Position Uncertainty",
+                        "topic": "/mavros/local_position/pose",
+                        "field": "covariance[0]",
+                        "unit": "m",
+                        "precision": 3
+                    },
+                    {
+                        "name": "Altitude",
+                        "topic": "/mavros/global_position/global",
+                        "field": "altitude",
+                        "unit": "m",
+                        "precision": 1
+                    },
+                    {
+                        "name": "Ground Speed",
+                        "topic": "/mavros/local_position/velocity_local",
+                        "field": "twist.linear",
+                        "unit": "m/s",
+                        "precision": 2
+                    },
+                    {
+                        "name": "Battery",
+                        "topic": "/mavros/battery",
+                        "field": "percentage",
+                        "unit": "%",
+                        "precision": 0
+                    },
+                    {
+                        "name": "GPS Satellites",
+                        "topic": "/mavros/global_position/raw/fix",
+                        "field": "status.satellites_visible",
+                        "unit": "",
+                        "precision": 0
+                    },
+                    {
+                        "name": "HDOP",
+                        "topic": "/mavros/global_position/raw/fix",
+                        "field": "position_covariance[0]",
+                        "unit": "",
+                        "precision": 2
+                    }
+                ]
+            }
+        }
+    ],
+    "alerts": {
+        "spoofing_detection": {
+            "enabled": true,
+            "audio_file": "critical_alert.wav",
+            "log_to_file": true
+        },
+        "sensor_failure": {
+            "enabled": true,
+            "audio_file": "warning.wav",
+            "log_to_file": true
+        }
+    }
+}

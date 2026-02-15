@@ -1,0 +1,27 @@
+# Exclude large binaries
+*.tar.gz
+*.zip
+*.ulg
+
+# Exclude ROS build artifacts
+build/
+install/
+log/
+.colcon/
+colcon_build_config.py
+
+# Exclude Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# System / IDE
+.DS_Store
+.env
+.vscode/
+
+# Legacy logs (keeping structure, ignoring content)
+reports/flight_logs/*.ulg
+field_evidence/logs/*.ulg

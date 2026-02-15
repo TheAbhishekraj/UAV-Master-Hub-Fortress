@@ -1,0 +1,57 @@
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = """
+    -ra
+    --strict-markers
+    --strict-config
+    --showlocals
+    --tb=short
+    --cov=agri_hexacopter
+    --cov-report=term-missing
+    --cov-report=html
+    --cov-report=xml
+"""
+testpaths = [
+    "src/agri_hexacopter/tests",
+]
+python_files = [
+    "test_*.py",
+    "*_test.py",
+]
+python_classes = [
+    "Test*",
+]
+python_functions = [
+    "test_*",
+]
+markers = [
+    "integration: Integration tests (deselect with '-m \"not integration\"')",
+    "slow: Slow tests (deselect with '-m \"not slow\"')",
+    "hardware: Tests requiring hardware/simulation (deselect with '-m \"not hardware\"')",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["agri_hexacopter"]
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"

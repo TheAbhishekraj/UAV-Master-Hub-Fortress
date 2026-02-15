@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  uav_lab:
+    image: uav_hub_master:v1
+    container_name: thermal_hexacopter_lab
+    privileged: true
+    network_mode: host
+
+    # X11 Forwarding for Gazebo GUI
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.docker.xauth
+
+    volumes:
+      # Mount entire UAV Master Hub
+      - /home/abhishek/uav_master_hub:/root/uav_master_hub:rw
+
+      # X11 socket for GUI
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+
+      # Shared memory for DDS
+      - /dev/shm:/dev/shm
+
+    devices:
+      # GPU access (if available)
+      - /dev/dri:/dev/dri
+
+    working_dir: /root/uav_master_hub/projects/thermal_hexacopter
+
+    # Keep container running
+    command: tail -f /dev/null
+
+    stdin_open: true
+    tty: true

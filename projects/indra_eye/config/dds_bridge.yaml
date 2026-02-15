@@ -1,0 +1,51 @@
+# Micro-XRCE-DDS Bridge Configuration
+# Maps ROS 2 topics to PX4 UORB messages
+
+topics:
+  # ES-EKF Fused Odometry → PX4 Visual Odometry
+  - ros_topic_name: "/indra_eye/fused_odom"
+    type: "px4_msgs/msg/VehicleOdometry"
+    dds_topic_name: "/fmu/in/vehicle_visual_odometry"
+    qos_profile: "sensor_data"
+    direction: "ROS_TO_PX4"
+    
+  # ES-EKF Fused Pose → PX4 Local Position
+  - ros_topic_name: "/indra_eye/fused_pose"
+    type: "px4_msgs/msg/VehicleLocalPosition"
+    dds_topic_name: "/fmu/in/vehicle_local_position"
+    qos_profile: "sensor_data"
+    direction: "ROS_TO_PX4"
+    
+  # Navigation Mode → PX4 (custom message for logging)
+  - ros_topic_name: "/indra_eye/navigation_mode"
+    type: "std_msgs/msg/String"
+    dds_topic_name: "/fmu/in/indra_eye_mode"
+    qos_profile: "default"
+    direction: "ROS_TO_PX4"
+    
+  # Spoofing Alert → PX4
+  - ros_topic_name: "/indra_eye/spoofing_detected"
+    type: "std_msgs/msg/Bool"
+    dds_topic_name: "/fmu/in/indra_eye_spoofing"
+    qos_profile: "default"
+    direction: "ROS_TO_PX4"
+
+# QoS Profiles
+qos_profiles:
+  sensor_data:
+    history: keep_last
+    depth: 5
+    reliability: best_effort
+    durability: volatile
+    
+  default:
+    history: keep_last
+    depth: 10
+    reliability: reliable
+    durability: volatile
+
+# Agent Configuration
+agent:
+  udp_port: 8888
+  verbose: true
+  discovery: true

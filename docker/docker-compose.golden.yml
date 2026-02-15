@@ -1,0 +1,178 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# UAV MASTER HUB - GOLDEN IMAGE DOCKER COMPOSE
+# ═══════════════════════════════════════════════════════════════════════════
+# Version: 4.0
+# Purpose: Production-grade portable PhD research platform
+# Host: Ubuntu 24.04 Wayland → Container: Ubuntu 22.04 X11
+# Features: GUI forwarding, symlink preservation, full hardware access
+# ═══════════════════════════════════════════════════════════════════════════
+
+version: '3.8'
+
+services:
+  uav_hub_golden:
+    # ═══════════════════════════════════════════════════════════════════════
+    # 🏗️ BUILD CONFIGURATION
+    # ═══════════════════════════════════════════════════════════════════════
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.golden
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+
+    image: uav_hub_golden:v4
+    container_name: uav_hub_golden
+    hostname: uav-hub-golden
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # 🔐 PRIVILEGES & CAPABILITIES
+    # ═══════════════════════════════════════════════════════════════════════
+    privileged: true # Required for hardware access (GPU, devices)
+
+    # Alternative to privileged (more secure, but may need adjustment)
+    # cap_add:
+    #   - SYS_ADMIN
+    #   - SYS_PTRACE
+    #   - NET_ADMIN
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # 🌐 NETWORK CONFIGURATION
+    # ═══════════════════════════════════════════════════════════════════════
+    network_mode: host # Required for PX4 SITL UDP communication
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # 🖥️ DISPLAY & GUI FORWARDING (Wayland→X11 Bridge)
+    # ═══════════════════════════════════════════════════════════════════════
+    environment:
+      # Display Configuration
+      - DISPLAY=${DISPLAY:-:0}
+
+      # X11 Optimizations
+      - QT_X11_NO_MITSHM=1 # Disable MIT-SHM (required for Docker X11)
+      - XAUTHORITY=/tmp/.docker.xauth
+
+      # OpenGL Configuration
+      - LIBGL_ALWAYS_SOFTWARE=1 # Software rendering (fallback)
+      - LIBGL_ALWAYS_INDIRECT=0 # Direct rendering when possible
+
+      # Gazebo Configuration
+      - GZ_SIM_RESOURCE_PATH=/root/uav_master_hub/assets/models:/root/PX4-Autopilot/Tools/simulation/gz/models
+
+      # ROS 2 Configuration
+      - ROS_DOMAIN_ID=0
+      - ROS_LOCALHOST_ONLY=0
+
+      # PX4 Configuration
+      - PX4_SIM_MODEL=gz_x500
+
+      # Hardware Configuration
+      - HARDWARE_CONFIG=simulation
+
+      # Timezone
+      - TZ=Asia/Kolkata
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # 📂 VOLUME MOUNTS (Symlink-Preserving)
+    # ═══════════════════════════════════════════════════════════════════════
+    volumes:
+      # X11 Socket (GUI forwarding)
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+
+      # X11 Authentication
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+
+      # Shared Memory (required for Gazebo)
+      - /dev/shm:/dev/shm
+
+      # �️ THE READ-ONLY SHIELD: Mount entire Hub for development but protect against accidental edits
+      # Note: We use :ro to protect your research, while logic is already "Baked-In" to the image.
+      - /home/abhishek/uav_master_hub:/root/uav_master_hub:ro
+
+      # Device access for OpenGL acceleration
+      - /dev/dri:/dev/dri
+      # ═══════════════════════════════════════════════════════════════════
+      # 📊 Persistent Data (Optional - for logs/results)
+      # ═══════════════════════════════════════════════════════════════════
+      # Uncomment to persist PX4 logs outside container
+      # - ${PWD}/field_evidence/logs:/root/PX4-Autopilot/build/px4_sitl_default/logs:rw
+
+      # ═══════════════════════════════════════════════════════════════════════
+      # 🔌 DEVICE ACCESS
+      # ═══════════════════════════════════════════════════════════════════════
+    devices:
+      # GPU Access (for hardware-accelerated Gazebo rendering)
+      - /dev/dri:/dev/dri
+      # Optional: USB devices (for hardware-in-the-loop testing)
+      # - /dev/ttyUSB0:/dev/ttyUSB0
+      # - /dev/ttyACM0:/dev/ttyACM0
+
+      # ═══════════════════════════════════════════════════════════════════════
+      # 🚀 STARTUP CONFIGURATION
+      # ═══════════════════════════════════════════════════════════════════════
+    stdin_open: true # Keep STDIN open (docker run -i)
+    tty: true # Allocate pseudo-TTY (docker run -t)
+
+    # Restart policy
+    restart: unless-stopped
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # 🏷️ LABELS (Metadata)
+    # ═══════════════════════════════════════════════════════════════════════
+    labels:
+      - "project=uav_master_hub"
+      - "version=4.0"
+      - "type=golden_image"
+      - "purpose=phd_research"
+      - "ros_distro=humble"
+      - "px4_version=v1.14.3"
+      - "gazebo_version=garden"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 📝 USAGE INSTRUCTIONS
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# SETUP (One-time):
+#   1. Create X11 auth file:
+#      touch /tmp/.docker.xauth
+#      xauth nlist $DISPLAY | sed -e 's/^..../ffff/' | xauth -f /tmp/.docker.xauth nmerge -
+#
+#   2. Allow Docker to access X11:
+#      xhost +local:docker
+#
+# BUILD:
+#   docker compose -f docker-compose.golden.yml build
+#
+# RUN (Interactive):
+#   docker compose -f docker-compose.golden.yml up
+#
+# RUN (Detached):
+#   docker compose -f docker-compose.golden.yml up -d
+#
+# EXEC INTO CONTAINER:
+#   docker compose -f docker-compose.golden.yml exec uav_hub_golden bash
+#
+# STOP:
+#   docker compose -f docker-compose.golden.yml down
+#
+# REBUILD (Clean):
+#   docker compose -f docker-compose.golden.yml build --no-cache
+#
+# ═══════════════════════════════════════════════════════════════════════════
+# 🔧 TROUBLESHOOTING
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# Issue: "cannot open display"
+# Solution: 
+#   xhost +local:docker
+#   xauth nlist $DISPLAY | sed -e 's/^..../ffff/' | xauth -f /tmp/.docker.xauth nmerge -
+#
+# Issue: "Gazebo black screen"
+# Solution: Set LIBGL_ALWAYS_SOFTWARE=1 (already configured)
+#
+# Issue: "Symlinks broken in container"
+# Solution: Ensure mounting entire Hub directory (already configured)
+#
+# Issue: "Permission denied on /dev/dri"
+# Solution: Add user to video group on host: sudo usermod -aG video $USER
+#
+# ═══════════════════════════════════════════════════════════════════════════
