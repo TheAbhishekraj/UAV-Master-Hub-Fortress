@@ -12,11 +12,11 @@
 This repository is structured as a **Mono-Repo Research Hub**, decoupling core infrastructure from mission-specific logic. This "MIT-style" logic ensures scalability and professional-grade data integrity.
 
 ### 🏛️ Repository Silos
-- **`/shared_libs` (The Foundation)**: Contains global message definitions (`px4_msgs`) and shared communication utilities.
-- **`/projects` (The Dimensions)**: Independent mission modules including `indra_eye`, `thermal_hexacopter`, and edge AI models.
-- **`/docker` (The Environment)**: The "Golden Vault" containerization logic with 100% reproducibility and Wayland-to-X11 GUI bridging.
-- **`/reports` (The Evidence)**: Physically validated flight logs, AI performance audits, and PhD completion certificates.
-- **`/assets` (The Digital Twin)**: Curated Gazebo worlds (Bihar Maize) and high-fidelity SDF drone models.
+- **`/shared_libs` (The Foundation)**: Global message definitions and utilities.
+- **`/projects` (The Dimensions)**: Mission modules (Indra-Eye, Thermal-Hexacopter).
+- **`/docker` (The Environment)**: Immutable reproduction logic.
+- **`/reports` (The Evidence)**: PhD Defense Materials ([ELI5](reports/PROJECT_ELI5.md), [Presentation](reports/DEFENSE_PRESENTATION.md), [Lit Review](reports/LITERATURE_REVIEW.md), [Q&A](reports/SUPERVISOR_QA.md)).
+- **`/assets` (The Digital Twin)**: Gazebo worlds and SDF models.
 
 ---
 
