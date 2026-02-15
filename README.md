@@ -15,7 +15,7 @@ This repository is structured as a **Mono-Repo Research Hub**, decoupling core i
 - **`/shared_libs` (The Foundation)**: Global message definitions and utilities.
 - **`/projects` (The Dimensions)**: Mission modules (Indra-Eye, Thermal-Hexacopter).
 - **`/docker` (The Environment)**: Immutable reproduction logic.
-- **`/reports` (The Evidence)**: PhD Defense Materials ([ELI5](reports/PROJECT_ELI5.md), [Presentation](reports/DEFENSE_PRESENTATION.md), [Lit Review](reports/LITERATURE_REVIEW.md), [Q&A](reports/SUPERVISOR_QA.md)).
+- **`/reports` (The Evidence)**: Ph.D. Defense Materials (**[Final Presentation](reports/FINAL_SUPERVISOR_PRESENTATION.md)**, [ELI5](reports/PROJECT_ELI5.md), [Q&A](reports/SUPERVISOR_QA.md)).
 - **`/assets` (The Digital Twin)**: Gazebo worlds and SDF models.
 
 ---
