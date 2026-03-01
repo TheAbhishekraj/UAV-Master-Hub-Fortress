@@ -1,0 +1,157 @@
+\documentclass[aspectratio=169, xcolor=table]{beamer}
+\usetheme{Madrid}
+\usecolortheme{whale}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title[Resilient Autonomous UAV Systems]{Resilient Autonomous UAV Systems for Precision Agriculture in GPS-Challenged Environments}
+\subtitle{Ph.D. Defense Presentation}
+\author{Abhishek Raj}
+\institute[KIIT University]{KIIT University, Bhubaneswar \\ \vspace{0.2cm} Supervisor: Prof. Pramod Kumar Mullick}
+\date{March 2026}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Slide 2: The Problem Statement}
+    \begin{itemize}
+        \item \textbf{Context:} Munger, Bihar relies heavily on maize farming. Moisture stress causes up to 18\% annual yield loss.
+        \item \textbf{Current Tech:} Drones use thermal cameras but rely entirely on GPS.
+        \item \textbf{The Gap:} The riverine "Diara" lands have thick canopies causing severe GPS shadows. Standard drones fail when the "stars go dark."
+        \item \textbf{Objective:} Build a "Doctor Bird" that detects crop fever and navigates safely without GPS.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Slide 3: The Solution - Fortress v4.0}
+    \begin{itemize}
+        \item A Mono-Repo, Mono-Logic architecture ensuring high reliability.
+        \item \textbf{Tiered Decoupling Method:}
+        \begin{itemize}
+            \item \textbf{The Body:} PX4 + Gazebo (Physics)
+            \item \textbf{The Nerves:} MicroXRCE-DDS with Transient Local QoS (Communication)
+            \item \textbf{The Brain:} V5 Mission Commander (Autonomy)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Slide 4: System Architecture Diagram}
+    \begin{center}
+        \textit{[Placeholder for Architecture Diagram: Show PX4 $\leftrightarrow$ DDS Bridge $\leftrightarrow$ ROS2 Nodes]}
+    \end{center}
+    \begin{itemize}
+        \item Seamless translation between hardware telemetry and high-level ROS 2 logic.
+        \item 100\% Reproducible Golden Docker Image.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Slide 5: Phase 1 - AI Thermal Detection}
+    \begin{itemize}
+        \item \textbf{Model:} MobileNetV2-YOLOv8 trained on custom thermal datasets.
+        \item \textbf{Performance:} 92.0\% F1-Score in identifying crop thermal stress.
+        \item \textbf{Latency:} Optimized to 45ms per frame (within the 100ms safety window).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Slide 6: Path Planning (A* Navigation)}
+    \begin{itemize}
+        \item Dynamic obstacle avoidance (e.g., tractors, trees).
+        \item We implemented an $A^*$ search where the cost function is optimized for maize row adherence:
+    \end{itemize}
+    \begin{equation}
+        f(n) = g(n) + h(n)
+    \end{equation}
+    \begin{itemize}
+        \item \textit{$g(n)$}: Exact cost from start.
+        \item \textit{$h(n)$}: Heuristic cost to target (Euclidean bias).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Slide 7: The 'Inner Ear' - ES-EKF on SO(3)}
+    \textbf{The Challenge:} Standard EKFs suffer gimbal lock in high winds.
+    
+    \textbf{The Solution:} Error-State Kalman Filter on the $SO(3)$ manifold.
+    \begin{equation}
+        \delta \mathbf{x} = [\delta \mathbf{p}, \delta \mathbf{v}, \delta \boldsymbol{\theta}, \delta \mathbf{a}_b, \delta \boldsymbol{\omega}_b]^\top
+    \end{equation}
+    \begin{itemize}
+        \item Maintains attitude stability singularity-free.
+        \item Z-Variance validated at \textbf{0.031m} (< 0.05m target).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Slide 8: GPS-Denied Validation (SITL)}
+    \begin{center}
+        \textit{[Placeholder for Graph: Drone trajectory tracking during simulated GPS loss event]}
+    \end{center}
+    \begin{itemize}
+        \item Event: Satellites drop artificially.
+        \item Response: V5 Commander shifts from \texttt{GNSS\_HEALTHY} to \texttt{SLAM\_MODE}.
+        \item Result: Drone maintains steady hover and returns to base using Indra-Eye.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Slide 9: Resolving QoS Starvation}
+    \begin{itemize}
+        \item \textbf{Bug:} "IMU Updates: 0" causing total Navigation failure.
+        \item \textbf{Root Cause:} FastRTPS Volatile QoS mismatch dropping IMU packets before node subscription.
+        \item \textbf{Fix:} Engineered \texttt{TRANSIENT\_LOCAL} policy ensuring persistence of crucial sensor streams.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Slide 10: State Machine - V5 Commander}
+    \begin{itemize}
+        \item Fully autonomous transition framework.
+        \item \textbf{BOOT} $\rightarrow$ \textbf{PREFLIGHT\_CHECK} (Battery, Camera, Planner, Sprayer) $\rightarrow$ \textbf{ARM + OFFBOARD} $\rightarrow$ \textbf{TAKEOFF} $\rightarrow$ \textbf{SURVEY}.
+        \item Ensures safety conditions are strictly met before arming.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Slide 11: The Golden Run (Proof of Concept)}
+    \begin{itemize}
+        \item Conducted Live Verification in the Immutable Docker Container.
+        \item Split-Launch methodology eliminated Gazebo-to-PX4 bridge timeouts.
+        \item Validated through 100\% match MD5 Manifest checksum sealing.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Slide 12: Socioeconomic Impact (Bihar)}
+    \begin{itemize}
+        \item \textbf{Target:} Munger, Bihar Smallholder Farmers.
+        \item \textbf{Action:} Targeted micro-spraying of distressed plants based on AI thermal data.
+        \item \textbf{Result:} Prevents 18\% crop loss, reducing resource waste.
+        \item \textbf{Verified Metrics:} \textbf{\textcurrency 10,200/ha savings} per farmer annually.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Slide 13: Future Work - The Challenge of Reality}
+    \begin{itemize}
+        \item We are moving from "Digital Fields" to "Real Munger Terrain."
+        \item \textbf{The Challenge:} Uneven terrain, highly unreliable GPS, and immense "Visual Noise" from moving crop canopies.
+        \item In a controlled lab, a basic drone works. In the riverine terrain of Bihar, \textit{Computational Latency kills}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Slide 14: The "High Bid" Funding Proposal}
+    \textbf{The Requirement:} To ensure our 'Inner Ear' math finishes computing before the drone hits a tree, we require a \textbf{\textcurrency 2,00,200} provision block.
+    \begin{itemize}
+        \item \textbf{NVIDIA Jetson Orin Nano:} Required for real-time edge processing of the ES-EKF without saturating flight controllers.
+        \item \textbf{Livox Mid-360 Lidar:} Required for accurate 3D obstacle avoidance where RGB/Thermal cameras fail due to severe glare.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Slide 15: Conclusion}
+    \begin{center}
+        \Large{\textbf{The UAV Master Hub is a Self-Healing Robotic Ecosystem.}}
+        
+        \vspace{0.5cm}
+        Thank you.\\
+        \textit{Jai Hind!}
+    \end{center}
+\end{frame}
+
+\end{document}

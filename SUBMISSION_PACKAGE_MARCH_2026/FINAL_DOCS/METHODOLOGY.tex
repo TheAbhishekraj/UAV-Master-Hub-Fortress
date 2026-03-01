@@ -1,0 +1,42 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, geometry, graphicx}
+\geometry{a4paper, margin=1in}
+
+\title{\textbf{Methodology Deep-Dive: The Fortress Architecture v4.0}}
+\author{Abhishek Raj}
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\section{Introduction to Tiered Decoupling Method}
+The core architectural thesis of this dissertation is the "Fortress Architecture," a Tiered Decoupling Method designed to isolate hardware drivers from high-level mission heuristics. This mono-repo, mono-logic approach is divided into three distinct modules: The Body, The Nerves, and The Brain.
+
+\subsection{The Body: Physicality and Simulation}
+The physical execution layer relies on the PX4 Autopilot firmware interfaced with a Gazebo physics simulation. This layer is strictly agnostic to agricultural logic. It processes standard MAVLink trajectories and outputs raw IMU and odometry data.
+
+\subsection{The Nerves: Communication and QoS Durability}
+The critical integration layer utilizes MicroXRCE-DDS to bridge PX4 with the ROS 2 Humble ecosystem. A fundamental methodological innovation was resolving the DDS Quality of Service (QoS) durability mismatch. By implementing a \texttt{TRANSIENT\_LOCAL} policy on the sensor topics, the system ensures that high-frequency IMU data streams are persistently available to late-joining nodes, entirely mitigating the "IMU Updates: 0" data starvation error.
+
+\subsection{The Brain: V5 Master Mission Commander}
+The highest tier is the V5 Master Mission Commander, which dictates the autonomous state machine (BOOT $\rightarrow$ PREFLIGHT $\rightarrow$ ARM $\rightarrow$ TAKEOFF $\rightarrow$ SURVEY). Under this decoupling, the Brain can trigger complex behaviors (e.g., sprayer actuation) without interfering with the low-level flight controller.
+
+\section{Mathematical Innovation}
+
+\subsection{Path Planning: Dynamic $A^*$ Optimization}
+We implemented a dynamic $A^*$ search algorithm optimized for field traversal. The algorithm calculates the most efficient path avoiding dynamic obstacles (such as tractors) while adhering to maize rows. The cost function is defined as:
+\begin{equation}
+    f(n) = g(n) + h(n)
+\end{equation}
+where $g(n)$ is the exact cost from the start node to node $n$, and $h(n)$ is the heuristic estimated cost from node $n$ to the target.
+
+\subsection{Robust State Estimation: ES-EKF on $SO(3)$}
+To combat GPS-denied environments in the Munger riverine corridors, the Indra-Eye system deploys an Error-State Kalman Filter (ES-EKF). Standard EKFs utilizing Euler angles suffer from gimbal lock during aggressive wind-rejection maneuvers. To ensure mathematical robustness, our filter operates strictly on the $SO(3)$ Lie group manifold.
+
+The error state vector is defined as:
+\begin{equation}
+    \delta \mathbf{x} = [\delta \mathbf{p}, \delta \mathbf{v}, \delta \boldsymbol{\theta}, \delta \mathbf{a}_b, \delta \boldsymbol{\omega}_b]^\top
+\end{equation}
+Here, $\delta \mathbf{p}$ is the position error, $\delta \mathbf{v}$ is the velocity error, $\delta \boldsymbol{\theta}$ is the orientation error vector (represented in the tangent space $\mathfrak{so}(3)$), and $\delta \mathbf{a}_b, \delta \boldsymbol{\omega}_b$ track IMU biases. This formulation guarantees singularity-free attitude integration, serving as a reliable "Inner Ear" for the UAV when satellite navigation is compromised.
+
+\end{document}
