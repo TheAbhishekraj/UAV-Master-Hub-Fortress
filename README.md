@@ -14,7 +14,7 @@
 | Field | Details |
 |---|---|
 | **Author** | Abhishek Raj (Roll No: 2581195) |
-| **Email** | 2581195@kiit.ac.in |
+| **Email** | theabishekraj@gmail.com |
 | **Supervisor** | Prof. Pramod Kumar Mullick |
 | **Institution** | KIIT University, Bhubaneswar |
 | **Thesis Title** | *Resilient Autonomous UAV Systems for Precision Agriculture in GPS-Challenged Environments* |

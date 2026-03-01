@@ -149,6 +149,6 @@
 
 ---
 
-*Prepared by: Abhishek Raj (2581195@kiit.ac.in) | KIIT University, Bhubaneswar*
+*Prepared by: Abhishek Raj (theabishekraj@gmail.com) | KIIT University, Bhubaneswar*
 *Supervisor: Prof. Pramod Kumar Mullick*
 *Funding Request Ref: KIIT/PhD/2026/UAV-HITL-001 | March 2026*

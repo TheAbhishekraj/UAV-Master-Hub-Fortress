@@ -2,7 +2,7 @@ Subject: PhD Thesis Submission — Resilient Autonomous UAV Systems for Precisio
         [Phase 1 + Phase 2 SITL Maturity Verified | HITL Funding Request Enclosed]
 
 Date: March 1, 2026
-From: Abhishek Raj <2581195@kiit.ac.in>
+From: Abhishek Raj <theabishekraj@gmail.com>
 To: PhD Thesis Committee, KIIT University, Bhubaneswar
 CC: Supervisor Prof. Pramod Kumar Mullick <pramodkumar.mullick@kiit.ac.in>
 
@@ -118,9 +118,9 @@ I am available for a committee presentation at your earliest convenience and wel
 Respectfully submitted,
 
 **Abhishek Raj**
-Roll No. / Email: 2581195@kiit.ac.in
+Roll No. / Email: theabishekraj@gmail.com
 PhD Candidate
-School of Electronics Engineering
+School of Mechanical Engineering
 KIIT University, Bhubaneswar
 Supervisor: Prof. Pramod Kumar Mullick
 Date: March 1, 2026
