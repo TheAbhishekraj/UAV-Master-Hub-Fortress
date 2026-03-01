@@ -6,7 +6,6 @@ ae0c5a468443dce19cc1236598d283d7  ./dimension2_robotics_framework.md
 f3171356e77dac4498f981d25e602cbd  ./dimension7_completion.md
 e7b7536607667c53d9e5575b58145715  ./SYSTEM_HEALTH_AUDIT.md
 4f9aa7536d0660ad2285cdc18351c7c8  ./GOLDEN_RUN_PDCA_RESULTS.md
-551fe56d1aa46fddcfe3ca8b3a88e050  ./MANIFEST_CHECKSUM_FREEZE.txt
 5a4e124185a422fcd190c80714b76554  ./dimension9_competitive_analysis.md
 693de7f64188bb1a501bd88cd60a784e  ./PHD_FINAL_CHECKLIST.yaml
 388c7ca43ac2e1c0de0bfff0514c1a57  ./dimension3_field_trial_protocol.md
