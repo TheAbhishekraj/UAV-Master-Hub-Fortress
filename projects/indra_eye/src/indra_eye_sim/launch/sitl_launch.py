@@ -20,28 +20,30 @@ def generate_launch_description():
     # Package directories
     sim_pkg = get_package_share_directory('indra_eye_sim')
     
-    # Gazebo world file
-    world_file = os.path.join(sim_pkg, 'worlds', 'himalayan_terrain.world')
-    
     return LaunchDescription([
-        # Gazebo server
+        # PX4 SITL with Gazebo Garden (Bihar Hexacopter Mission)
         ExecuteProcess(
-            cmd=['gzserver', '--verbose', world_file],
-            output='screen',
-            name='gazebo_server'
-        ),
-        
-        # Gazebo client (GUI)
-        ExecuteProcess(
-            cmd=['gzclient'],
-            output='screen',
-            name='gazebo_client'
-        ),
-        
-        # PX4 SITL (assuming PX4-Autopilot is installed)
-        ExecuteProcess(
-            cmd=['make', 'px4_sitl', 'gazebo'],
+            cmd=['make', 'px4_sitl', 'gz_standard_vtol'],
             cwd=os.path.expanduser('~/PX4-Autopilot'),
+            env={
+                **os.environ,
+                'PX4_GZ_WORLD': 'bihar_maize',
+                'PX4_GZ_MODEL': 'agri_hexacopter_drone',
+                'PX4_GZ_MODEL_POSE': '0,0,1,0,0,0',
+                'PX4_GZ_STANDALONE': '1',
+                'PX4_HOME_LAT': '25.344644',
+                'PX4_HOME_LON': '86.483958',
+                'PX4_HOME_ALT': '50.0',
+                'GZ_IP': '127.0.0.1',
+                'GZ_PARTITION': 'indra_eye_sim',
+                'GZ_SIM_RENDER_ENGINE_TYPE': 'ogre',
+                'GZ_SIM_RESOURCE_PATH': ':'.join([
+                    os.path.expanduser('~/uav_master_hub/assets/models'),
+                    os.path.expanduser('~/uav_master_hub/assets/worlds'),
+                    os.path.expanduser('~/PX4-Autopilot/Tools/simulation/gz/models'),
+                    os.path.expanduser('~/PX4-Autopilot/Tools/simulation/gz/worlds'),
+                ])
+            },
             output='screen',
             name='px4_sitl'
         ),
@@ -63,7 +65,8 @@ def generate_launch_description():
                 'use_gnss': True,
                 'use_vio': True,
                 'use_slam': True,
-                'publish_rate_hz': 100.0
+                'publish_rate_hz': 100.0,
+                'visual_weight': 5.0
             }]
         ),
         
@@ -80,7 +83,19 @@ def generate_launch_description():
             }]
         ),
         
-        # RViz for visualization
+        # MAVROS Bridge Node (publishes /px4/imu and /px4/gnss for ES-EKF)
+        Node(
+            package='indra_eye_core',
+            executable='mavros_bridge_node',
+            name='mavros_bridge_node',
+            output='screen',
+            parameters=[{
+                'mavlink_port': 14580,
+                'target_system_id': 1
+            }]
+        ),
+
+        # RViz for visualization (requires X11 display)
         Node(
             package='rviz2',
             executable='rviz2',

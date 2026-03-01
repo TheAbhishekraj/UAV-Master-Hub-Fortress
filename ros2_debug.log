@@ -1,0 +1,71 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-03-01-09-32-31-752425-uav-hub-golden-1919
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [launch.user]: 
+[INFO] [launch.user]: ╔══════════════════════════════════════════════════════╗
+[INFO] [launch.user]: ║  🌾 5-LAYER AUTONOMOUS AGRI-UAV SYSTEM LAUNCHING  ║
+[INFO] [launch.user]: ╠══════════════════════════════════════════════════════╣
+[INFO] [launch.user]: ║  V4a MSF Bridge       → /agri/odometry              ║
+[INFO] [launch.user]: ║  V4b A* Path Planner  → /agri/planned_path          ║
+[INFO] [launch.user]: ║  V2  Thermal Monitor  → /agri/plant_health/status   ║
+[INFO] [launch.user]: ║  V3  Sprayer Control  → /agri/spray_command         ║
+[INFO] [launch.user]: ║  V1  Image Collector  → /reports/dataset/           ║
+[INFO] [launch.user]: ║  V5  Mission Commander→ /agri/mission/log           ║
+[INFO] [launch.user]: ╚══════════════════════════════════════════════════════╝
+[INFO] [launch.user]: 
+[INFO] [msf_bridge-1]: process started with pid [1921]
+[INFO] [path_planner-2]: process started with pid [1923]
+[INFO] [thermal_monitor-3]: process started with pid [1925]
+[INFO] [agri_sprayer_control-4]: process started with pid [1927]
+[INFO] [v1_image_collector-5]: process started with pid [1929]
+[msf_bridge-1] [0m[INFO] [1772337753.363459492] [msf_bridge]: 🔮 V4 MSF Bridge (GPS-Denied Fusion) — ONLINE[0m
+[msf_bridge-1] [0m[INFO] [1772337753.365578473] [msf_bridge]: Waiting for VO feed... will fallback to PX4 EKF2 if needed.[0m
+[v1_image_collector-5] [0m[INFO] [1772337753.812622758] [v1_image_collector]: 📸 V1 Image Collector ready | 10 survey waypoints generated[0m
+[v1_image_collector-5] [0m[INFO] [1772337753.814315783] [v1_image_collector]: Survey grid: 10 waypoints over 20.0m × 20.0m field[0m
+[msf_bridge-1] [0m[INFO] [1772337754.176304231] [msf_bridge]: 🟡 NO VO — Using PX4 EKF2 position (GPS-assisted)[0m
+[path_planner-2] [0m[INFO] [1772337754.352186474] [path_planner]: 🗺️  Occupancy grid built: 40×40 cells (20.0m × 20.0m @ 0.5m/cell) | 5 obstacle regions loaded[0m
+[path_planner-2] [0m[INFO] [1772337754.391328440] [path_planner]: 🧭 V4 Path Planner (A*) — ONLINE[0m
+[path_planner-2] [0m[INFO] [1772337754.394364621] [path_planner]: Listening on /agri/navigate_to for goal requests[0m
+[agri_sprayer_control-4] [0m[INFO] [1772337754.472930831] [agri_sprayer_control]: 💊 V3 Sprayer Control (The Helper) — ONLINE[0m
+[agri_sprayer_control-4] [0m[INFO] [1772337754.474872771] [agri_sprayer_control]: Dose: 5.0 ml | Duration: 2.0 s | Arrival tolerance: 0.5 m[0m
+[thermal_monitor-3] [0m[INFO] [1772337754.489051021] [thermal_monitor]: 🌡️  V2 Thermal Monitor (The Doctor) — ONLINE[0m
+[thermal_monitor-3] [0m[INFO] [1772337754.490938977] [thermal_monitor]: 📊 Threshold: 200/255 | Min cluster: 50 px | Camera FoV: 60.0°[0m
+[INFO] [launch.user]: 🧠 [V5] Master Mission Commander starting in 3s...
+[INFO] [master_mission_commander-6]: process started with pid [2019]
+[v1_image_collector-5] [0m[INFO] [1772337756.320536022] [v1_image_collector]: 🔑 ARM + OFFBOARD commands sent[0m
+[master_mission_commander-6] [0m[INFO] [1772337757.098700285] [master_mission_commander]: 🧠 V5 Master Mission Commander — SUPER BRAIN ONLINE[0m
+[master_mission_commander-6] [0m[INFO] [1772337757.100634441] [master_mission_commander]: State machine initialised. Ready for BOOT sequence.[0m
+[v1_image_collector-5] [0m[INFO] [1772337757.416762453] [v1_image_collector]: 🚁 Takeoff initiated[0m
+[msf_bridge-1] [0m[INFO] [1772337758.271627731] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.057705346] [master_mission_commander]: ▶ STATE: BOOT → PREFLIGHT_CHECK[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.167067432] [master_mission_commander]: 🔍 PREFLIGHT CHECK[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.174401620] [master_mission_commander]:   ✅ Battery: 98% (simulated)[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.186794739] [master_mission_commander]:   ✅ Thermal Camera: ONLINE[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.188544297] [master_mission_commander]:   ✅ Path Planner: READY[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.198693309] [master_mission_commander]:   ✅ Sprayer Valve: ARMED[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.203882006] [master_mission_commander]:   ✅ MSF Bridge: ACTIVE[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.205748563] [master_mission_commander]: ▶ STATE: PREFLIGHT_CHECK → ARM[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.258414219] [master_mission_commander]: 🔑 ARM + OFFBOARD mode requested[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.360379327] [master_mission_commander]: 🔑 ARM + OFFBOARD mode requested[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.457685714] [master_mission_commander]: 🔑 ARM + OFFBOARD mode requested[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.558452371] [master_mission_commander]: 🔑 ARM + OFFBOARD mode requested[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.660097933] [master_mission_commander]: 🔑 ARM + OFFBOARD mode requested[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.759635543] [master_mission_commander]: 🔑 ARM + OFFBOARD mode requested[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.859769028] [master_mission_commander]: 🔑 ARM + OFFBOARD mode requested[0m
+[master_mission_commander-6] [0m[INFO] [1772337759.957790757] [master_mission_commander]: 🔑 ARM + OFFBOARD mode requested[0m
+[master_mission_commander-6] [0m[INFO] [1772337760.059589312] [master_mission_commander]: 🔑 ARM + OFFBOARD mode requested[0m
+[master_mission_commander-6] [0m[INFO] [1772337760.158236168] [master_mission_commander]: 🔑 ARM + OFFBOARD mode requested[0m
+[master_mission_commander-6] [0m[INFO] [1772337762.258357836] [master_mission_commander]: ▶ STATE: ARM → TAKEOFF[0m
+[msf_bridge-1] [0m[INFO] [1772337763.321393708] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[msf_bridge-1] [0m[INFO] [1772337768.324953083] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[msf_bridge-1] [0m[INFO] [1772337773.320678937] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[msf_bridge-1] [0m[INFO] [1772337778.323913677] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[msf_bridge-1] [0m[INFO] [1772337783.321229201] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[msf_bridge-1] [0m[INFO] [1772337788.321956254] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[msf_bridge-1] [0m[INFO] [1772337793.372145947] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[msf_bridge-1] [0m[INFO] [1772337798.371451143] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[msf_bridge-1] [0m[INFO] [1772337803.371423493] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[msf_bridge-1] [0m[INFO] [1772337808.371357021] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[msf_bridge-1] [0m[INFO] [1772337813.372278126] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[msf_bridge-1] [0m[INFO] [1772337818.422263167] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[msf_bridge-1] [0m[INFO] [1772337823.426058477] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m
+[msf_bridge-1] [0m[INFO] [1772337828.421399796] [msf_bridge]: [PX4_EKF2] N=0.00 E=0.00 D=0.00m | cov=0.100m²[0m

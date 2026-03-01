@@ -104,11 +104,12 @@ install_dependencies() {
     # Install ROS 2 dependencies
     print_info "Installing ROS 2 dependencies..."
     sudo apt-get install -y \
-        ros-humble-gazebo-ros-pkgs \
+        ros-humble-ros-gz \
         ros-humble-rviz2 \
         ros-humble-sensor-msgs \
         ros-humble-nav-msgs \
         ros-humble-geometry-msgs \
+        ros-humble-mavros-msgs \
         ros-humble-diagnostic-msgs
     
     # Check PX4-Autopilot

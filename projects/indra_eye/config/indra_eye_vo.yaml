@@ -1,0 +1,12 @@
+# V4: GPS-Denied Navigation Configuration
+# Activates the visual odometry pipeline
+
+visual_odometry:
+  enabled: true
+  camera_topic: "/camera/stereo/image"
+  odom_topic: "/camera/stereo/odom"
+  max_features: 200
+  min_features: 50
+  
+# Load supplementary VO parameters
+vo_parameters_file: "vo_params.yaml"

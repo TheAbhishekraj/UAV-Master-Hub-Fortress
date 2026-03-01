@@ -1,0 +1,8 @@
+# Indra-Eye Visual Odometry Configuration
+# Used during V4: GPS-Denied Navigation
+es_ekf_node:
+  ros__parameters:
+    use_gnss: true
+    use_vio: true
+    use_slam: true
+    visual_weight: 5.0  # Increased weight for VIO during GPS-denied phases

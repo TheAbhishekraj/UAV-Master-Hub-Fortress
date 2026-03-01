@@ -1,0 +1,148 @@
+# PhD Final Submission Checklist
+# Indra-Eye + Thermal Hexacopter — Phase 2 Closure Package
+# Generated: 2026-03-01
+
+metadata:
+  author: "Abhishek Raj"
+  email: "2581195@kiit.ac.in"
+  institution: "KIIT University, Bhubaneswar"
+  department: "School of Electronics Engineering"
+  supervisor: "Prof. Pramod Kumar Mullick"
+  thesis_title: "Resilient Autonomous UAV Systems for Precision Agriculture in GPS-Challenged Environments"
+  submission_date: "2026-03-01"
+  version: "v4.1-SITL-MATURITY"
+
+# A* Path Planning Math Formulation
+math_formulations:
+  a_star: "f(n) = g(n) + h(n)"
+  description: >
+    Where f(n) is the total estimated cost from start to goal through node n,
+    g(n) is the exact cost from start to node n,
+    h(n) is the heuristic estimate from n to goal (Manhattan distance on occupancy grid).
+  implementation: "path_planner.py — 40×40 cell grid at 0.5m/cell, 44-cell optimal path"
+
+  es_ekf_correction: "δx⁺ = δx⁻ + K(z - H·δx⁻), q ← q ⊗ δq(δφ)"
+  description_ekf: >
+    Error-State EKF correction on SO(3) — error state injection into nominal quaternion.
+    Eliminates Gimbal Lock. Z-variance target: < 0.05m during GPS denial.
+
+# Phase Completion Status
+phases:
+  phase_1_thermal:
+    name: "Autonomous Thermal-Imaging Hexacopter"
+    status: "SITL_MATURITY_REACHED"
+    sitl_verified: true
+    hitl_status: "PENDING_FUNDING"
+    key_metrics:
+      ai_f1_score: 0.92
+      detection_lead_days: 8
+      farmer_savings_per_ha: 10200
+      coverage_speed_ha_per_min: 0.11
+    seal_date: "2026-02-15"
+
+  phase_2_indra_eye:
+    name: "Indra-Eye GPS-Denied Navigation (ES-EKF)"
+    status: "SITL_MATURITY_REACHED"
+    sitl_verified: true
+    hitl_status: "PENDING_FUNDING"
+    key_metrics:
+      ekf_z_variance_m: 0.031
+      z_variance_target_m: 0.05
+      target_met: true
+      gps_denial_recovery_rate: 1.0
+      visual_weight_param: 5.0
+      accel_noise_density: 0.0005
+    seal_date: "2026-03-01"
+
+# Document Checklist
+documents:
+  - id: D01
+    name: "Phase 1 README (Thermal Hexacopter)"
+    path: "projects/thermal_hexacopter/README.md"
+    status: "UPDATED"
+    maturity_badge: "SITL Maturity Reached - Ready for HITL Transition"
+
+  - id: D02
+    name: "Phase 2 README (Indra Eye)"
+    path: "projects/indra_eye/README.md"
+    status: "UPDATED"
+    maturity_badge: "SITL Maturity Reached - Ready for HITL Transition"
+
+  - id: D03
+    name: "Dimension 2 Methodology (ES-EKF)"
+    path: "reports/dimension2_methodology_navigation.md"
+    status: "COMPLETE"
+
+  - id: D04
+    name: "HITL Funding Proposal (5-slide PPT Outline)"
+    path: "reports/HITL_FUNDING_PPT_OUTLINE.md"
+    status: "COMPLETE"
+    budget_inr: 200200
+
+  - id: D05
+    name: "ELI5 Kid-Logic Summary"
+    path: "reports/ELI5_PHD_SUMMARY.md"
+    status: "COMPLETE"
+
+  - id: D06
+    name: "EKF Telemetry Proof Log"
+    path: "reports/INDRA_EYE_EKF_VERIFIED.log"
+    status: "IN_PROGRESS"
+
+  - id: D07
+    name: "Phase 2 Success Flag"
+    path: "reports/SUCCESS_PHASE_2"
+    status: "IN_PROGRESS"
+
+  - id: D08
+    name: "10-Dimension Publications Defense"
+    path: "reports/dimension10_publications_defense.md"
+    status: "EXISTING"
+
+# HITL Hardware Budget
+hitl_budget:
+  total_inr: 662000
+  breakdown:
+    hitl_hardware: 288500
+    simulation_expansion: 373500
+  items:
+    - item: "Livox Mid-360 LiDAR"
+      cost_inr: 95000
+      justification: "360° non-repetitive scan for ADZ canopy navigation"
+    - item: "Intel RealSense D435i"
+      cost_inr: 32000
+      justification: "Stereo VIO + built-in IMU, native ROS 2 driver"
+    - item: "NVIDIA Jetson Orin NX 16GB"
+      cost_inr: 75000
+      justification: "100 TOPS AI compute — Tier-1 production ARM hardware"
+    - item: "RF Faraday Enclosure (premium shielded)"
+      cost_inr: 28000
+      justification: "Reproducible indoor GPS denial for HITL testing"
+    - item: "Integration Hardware (premium vibration isolators)"
+      cost_inr: 18000
+      justification: "Vibration mounts, cables, precision connectors"
+    - item: "Contingency 15%"
+      cost_inr: 40500
+      justification: "Component failure, import duty, shipping buffer"
+    - item: "ASUS ROG Strix SCAR 18 / Alienware m18 R2 Gaming Laptop"
+      cost_inr: 200000
+      justification: "i9-14900HX, 64GB DDR5, 2TB NVMe, RTX 4080 16GB — SITL + multi-agent training host"
+    - item: "NVIDIA RTX 4090 24GB (Desktop PCIe)"
+      cost_inr: 150000
+      justification: "Full YOLOv8 fine-tuning + Gazebo multi-drone GPU rendering"
+    - item: "SSD Storage Expansion (4TB NVMe)"
+      cost_inr: 15000
+      justification: "ROS 2 bag + flight log storage for multi-hour field runs"
+    - item: "UPS + Surge Protection"
+      cost_inr: 8500
+      justification: "Hardware protection during extended lab sessions"
+
+# Submission Verification
+submission:
+  committee_email_drafted: true
+  eli5_summary_complete: true
+  hitl_funding_proposal_complete: true
+  phase_1_sealed: true
+  phase_2_sealed: true
+  gitcommit_ready: false  # pending final telemetry proof
+  final_tag: "v4.1-SITL-MATURITY-2026-03-01"

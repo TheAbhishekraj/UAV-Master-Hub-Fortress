@@ -26,11 +26,18 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            # ── Original nodes ─────────────────────────────────────────
             'mission_control = agri_hexacopter.mission_control:main',
             'real_takeoff = agri_hexacopter.real_takeoff:main',
             'level1_basic_takeoff = agri_hexacopter.flight_levels.level1_basic_takeoff:main',
             'level2_survey_grid = agri_hexacopter.flight_levels.level2_survey_grid:main',
             'thermal_monitor = agri_hexacopter.thermal_monitor:main',
+            # ── 5-Layer Autonomous System (V1–V5) ──────────────────────
+            'v1_image_collector = agri_hexacopter.v1_image_collector:main',
+            'agri_sprayer_control = agri_hexacopter.agri_sprayer_control:main',
+            'path_planner = agri_hexacopter.path_planner:main',
+            'msf_bridge = agri_hexacopter.msf_bridge:main',
+            'master_mission_commander = agri_hexacopter.master_mission_commander:main',
         ],
     },
 )

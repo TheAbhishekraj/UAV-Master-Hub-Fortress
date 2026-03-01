@@ -13,6 +13,7 @@ find_package(nav_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(diagnostic_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(mavros_msgs REQUIRED)
 find_package(Eigen3 REQUIRED)
 
 # Include directories
@@ -40,6 +41,7 @@ ament_target_dependencies(mavros_bridge_node
   nav_msgs
   geometry_msgs
   std_msgs
+  mavros_msgs
 )
 
 # Path Aggregator Node executable

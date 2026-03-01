@@ -1,64 +1,86 @@
 # 🏛️ UAV-Master-Hub-Fortress
 **A Professional Research Ecosystem for Autonomous Thermal-Imaging UAVs**
 
-[![PhD Defense](https://img.shields.io/badge/PhD-Validated-gold)]()
-[![Architecture](https://img.shields.io/badge/Architecture-Fortress-blue)]()
-[![Reproducibility](https://img.shields.io/badge/Reproducibility-100%25-brightgreen)]()
-[![Environment](https://img.shields.io/badge/ROS2-Humble--PX4-success)]()
+[![PhD Defense](https://img.shields.io/badge/PhD-KIIT%20University-gold)](https://kiit.ac.in)
+[![Phase 1](https://img.shields.io/badge/Phase%201-SITL%20Maturity-brightgreen)](reports/SUCCESS_PHASE_2)
+[![Phase 2](https://img.shields.io/badge/Phase%202-SITL%20Maturity-brightgreen)](reports/INDRA_EYE_EKF_VERIFIED.log)
+[![Architecture](https://img.shields.io/badge/Architecture-Fortress%20v4.0-blue)]()
+[![ROS2](https://img.shields.io/badge/ROS2-Humble--PX4-success)]()
+
+---
+
+## 👨‍🎓 Author & Supervision
+
+| Field | Details |
+|---|---|
+| **Author** | Abhishek Raj (Roll No: 2581195) |
+| **Email** | 2581195@kiit.ac.in |
+| **Supervisor** | Prof. Pramod Kumar Mullick |
+| **Institution** | KIIT University, Bhubaneswar |
+| **Thesis Title** | *Resilient Autonomous UAV Systems for Precision Agriculture in GPS-Challenged Environments* |
+| **Version** | Fortress v4.0 — SITL Maturity | March 2026 |
 
 ---
 
 ## 🏗️ The Fortress Architecture
-This repository is structured as a **Mono-Repo Research Hub**, decoupling core infrastructure from mission-specific logic. This "MIT-style" logic ensures scalability and professional-grade data integrity.
+
+A **Mono-Repo Research Hub** decoupling core infrastructure from mission-specific logic. Strict silo separation ensures reproducibility, immutability, and professional-grade data integrity.
 
 ### 🏛️ Repository Silos
-- **`/shared_libs` (The Foundation)**: Global message definitions and utilities.
-- **`/projects` (The Dimensions)**: Mission modules (Indra-Eye, Thermal-Hexacopter).
-- **`/docker` (The Environment)**: Immutable reproduction logic.
-- **`/reports` (The Evidence)**: Ph.D. Defense Materials (**[Final Presentation](reports/FINAL_SUPERVISOR_PRESENTATION.md)**, [ELI5](reports/PROJECT_ELI5.md), [Q&A](reports/SUPERVISOR_QA.md)).
-- **`/assets` (The Digital Twin)**: Gazebo worlds and SDF models.
+
+| Silo | Purpose |
+|---|---|
+| `/shared_libs` | Global message definitions (`px4_msgs`, `agri_msgs`) and shared tools. |
+| `/projects/thermal_hexacopter` | **Phase 1**: Autonomous Thermal-Imaging mission (AI Doctor). |
+| `/projects/indra_eye` | **Phase 2**: GPS-Denied Navigation using SO(3) Error-State EKF. |
+| `/assets` | Digital Twins: Gazebo worlds (`bihar_maize.sdf`) and UAV models. |
+| `/reports` | Sealed Academic Evidence, System Audits, and Defense materials. |
+| `/docker` | Immutable reproducible environment (Golden Image v4.0). |
+| `/SUBMISSION_PACKAGE_MARCH_2026` | Final Dissertation Package with manifest checksums. |
 
 ---
 
-## 🚀 100% Reproducibility Guarantee
-The **"Golden Vault"** Docker environment ensures that the entire research stack—from OS dependencies to GPU-accelerated AI—runs identically on any machine.
+## 📊 PhD Validated Metrics (SITL)
 
-### 🛡️ Wayland-X11 Bridge
-The Hub implements a proprietary bridge for seamless GUI forwarding, allowing high-performance Gazebo rendering from within the container to the host Ubuntu 24.04 desktop.
+| Metric | Phase 1 (Thermal) | Phase 2 (Indra-Eye) | Status |
+|---|---|---|---|
+| **AI F1-Score** | 92.0% (MobileNetV2) | — | ✅ Validated |
+| **ES-EKF Z-Variance** | — | **0.031m** (< 0.05m target) | ✅ Proven |
+| **A* Search Path** | 44 cells (Euclidean bias) | — | ✅ Validated |
+| **GPS Denial Recovery** | — | **100%** (SLAM\_MODE active) | ✅ Proven |
+| **Farmer ROI** | **₹10,200/ha savings** | — | ✅ Certified |
 
+---
+
+## 🚀 Golden Demo Run (Supervisor Hardened)
+
+The demo is optimized for stability using a **Split-Launch Protocol** to prevent bridge timeouts.
+
+### 1. Emergency Restoration
+If the simulation is not visible, run the one-click recovery script:
 ```bash
-# Initialize the Vault
-cd docker/
-docker-compose -f docker-compose.golden.yml up -d
+bash projects/indra_eye/restore_demo.sh
+```
+
+### 2. Manual Verification
+- **Gazebo**: Check the landing pad for the `agri_hexacopter_drone`.
+- **QGroundControl**: Confirm "Ready for Takeoff" heartbeats.
+- **Diagnostics**:
+```bash
+docker exec uav_hub_golden bash -c "source /root/startup.sh && ros2 topic echo /indra_eye/diagnostics"
+```
+
+### 3. GPS Denial Proof
+```bash
+docker exec uav_hub_golden bash -c "source /root/startup.sh && ros2 topic pub -1 /indra_eye/simulate_gps_denial std_msgs/msg/Bool '{data: true}'"
 ```
 
 ---
 
-## 📊 PhD Victory Lap: Validated Metrics
-The system has been physically parity-validated in the **Bihar Maize Farm** world.
-
-| Metric | Achievement | Status |
-|--------|-------------|--------|
-| **AI F1-Score** | **91.9%** | ✅ Validated |
-| **Inference Latency** | **45ms** | ✅ Real-Time |
-| **Mission Success** | **100%** | ✅ 7/7 Waypoints |
-| **Altitude stability** | **±0.06m** | ✅ High-Precision |
-
----
-
-## 📜 Technical Contract
-This repository marks the "Front Door" of the PhD dissertation.
-- **Zero-Clutter Policy**: Clean root with strict `.gitignore` gatekeeping.
-- **Immutable Evidence**: Mission logs and certificates are baked into the `/reports` silo.
-- **Read-Only Shield**: Core research files are protected through container-level immutability.
-
----
-
-## 👨‍🎓 Author
-**Abhishek Raj**  
-PhD Candidate | Lead Robotics Researcher  
-*UAV Master Hub Fortress v4.0*  
-*Validated: February 15, 2026*
+## 🛡️ Key Engineering SEAL
+- **QoS Policy**: TRANSIENT_LOCAL for high-frequency IMU persistence.
+- **Rotation Math**: Lie Group exponential map for gimbal-lock prevention.
+- **Integrity**: `MANIFEST_CHECKSUM_FREEZE.txt` protects all submission evidence.
 
 ---
 
