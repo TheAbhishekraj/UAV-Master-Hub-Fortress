@@ -33,7 +33,7 @@ Sometimes the clouds hide the stars (GPS) that the bird uses to know where it is
 *   **`shared_libs/`** 🗣️: The "words" the bird uses to talk between its brain and its body.
 *   **`assets/`** 🎮: The video game world! We built a fake cornfield inside the computer.
 *   **`docker/`** 🪄: The "Magic Box." We put all the bird's code in this box so it always works perfectly on any computer.
-*   **`reports/`** & **`SUBMISSION_PACKAGE_MARCH_2026/`** 📚: The "Report Cards" showing the teacher (Professor Mullick) that the bird works!
+*   **`reports/`** & **`SUBMISSION_PACKAGE_MARCH_2026/`** 📚: The "Report Cards" showing the teacher (Professor Mullick) that the bird works! (👉 Read the full **[ELI5 Summary here](SUBMISSION_PACKAGE_MARCH_2026/FINAL_DOCS/ELI5_PHD_SUMMARY.md)**).
 
 ---
 
@@ -83,10 +83,23 @@ cd ~/uav_master_hub
 
 **What happens?** 
 1. The script will automatically clean up any old, stuck background containers.
-2. It will open a `gnome-terminal` with **3 dedicated tabs**:
-   - **Tab 1 (Master Brain):** Autonomously boots Gazebo and the V5 Mission Commander.
-   - **Tab 2 (Inner Ear):** Listens to the $SO(3)$ EKF variance data.
-   - **Tab 3 (Supervisior Override):** Provides a large, interactive `[ENTER]` button to instantly kill the GPS satellites and trigger the `SLAM_MODE` fallback mid-flight.
+2. It will open `gnome-terminal` with **4 dedicated windows**:
+   - **Window 1 (Master Brain):** Autonomously boots Gazebo and the V5 Mission Commander.
+   - **Window 2 (Ground Control):** Opens the QGroundControl interface.
+   - **Window 3 (Inner Ear):** Listens to the $SO(3)$ EKF variance data.
+   - **Window 4 (Supervisior Override):** Provides an interactive `[ENTER]` button to instantly kill the GPS satellites and trigger the `SLAM_MODE` fallback.
+
+### 🎮 Manual Interruption & QGC Path Planning
+For a LIVE PhD defense demonstration where you want to manually draw the flight path:
+1. Open the **QGroundControl** window that launched automatically.
+2. Click the **Plan View** icon (top-left) and physically click on the 3D map of the Munger farm to drop Waypoints.
+3. Click **Upload Required** (top-right).
+4. Switch to **Fly View** and slide the **"Slide to Confirm Mission Start"** bar at the bottom.
+5. *The "Ultimate Flex":* While the drone is flying your route, go to the **Supervisor Override** terminal, press `[ENTER]` to kill the GPS, and show the committee the $SO(3)$ SLAM taking over.
+
+### 📹 Mission Recording & Evidence Retrieval
+- **Video Capture:** Click the 📹 icon in the top-right of the **Gazebo** window to record physical flight behavior (.mp4), or use `Ctrl + Alt + Shift + R` to record your entire Ubuntu screen.
+- **Data Logging:** The launch script runs a background `rosbag_recorder` automatically. All IMU, Diagnostic, and GPS data for your flight is instantly archived in `/tmp/fortress_evidence/golden_bag_YYYYMMDD_HHMMSS/` after every run.
 
 ---
 

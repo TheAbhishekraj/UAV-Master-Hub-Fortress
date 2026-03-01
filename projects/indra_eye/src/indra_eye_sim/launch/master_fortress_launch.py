@@ -38,29 +38,14 @@ def generate_launch_description():
         output='screen'
     )
 
-    # 3. Manually Spawn the Hexacopter Drone
-    # This explicit service call guarantees we only get our custom Agri-Hexacopter.
-    spawn_cmd = [
-        'gz', 'service', '-s', '/world/bihar_maize/create',
-        '--reqtype', 'gz.msgs.EntityFactory',
-        '--reptype', 'gz.msgs.Boolean',
-        '--timeout', '10000',
-        '--req', "sdf_filename: '/root/uav_master_hub/assets/models/agri_hexacopter_drone/model.sdf', name: 'agri_hexacopter_drone', pose: {position: {z: 0.5}}"
-    ]
-    gz_spawn = ExecuteProcess(
-        cmd=spawn_cmd,
-        env=px4_env,
-        name='gz_spawner',
-        output='screen'
-    )
-
-    # 4. Start PX4 in STANDALONE mode
-    # Using gz_x500 with STANDALONE=1 ensures PX4 provides the flight controller 
-    # hooks without spawning a second generic quadcopter into the world.
+    # 3. Start PX4 in STANDALONE mode
+    # PX4 will automatically spawn the model defined in PX4_GZ_MODEL into the running server.
+    # We use gz_standard_vtol to inherit the VTOL/Multicopter physics profile correctly
+    # while preventing PX4 from launching its own instance of Gazebo via STANDALONE=1.
     px4_env_standalone = px4_env.copy()
     px4_env_standalone['PX4_GZ_STANDALONE'] = '1'
     px4_sitl = ExecuteProcess(
-        cmd=['make', 'px4_sitl', 'gz_x500'],
+        cmd=['make', 'px4_sitl', 'gz_standard_vtol'],
         cwd='/root/PX4-Autopilot',
         env=px4_env_standalone,
         name='px4_sitl',
@@ -115,7 +100,7 @@ def generate_launch_description():
     return LaunchDescription([
         gz_server,
         xrce_agent,
-        TimerAction(period=5.0, actions=[gz_spawn, gz_gui]),
+        TimerAction(period=5.0, actions=[gz_gui]),
         TimerAction(period=10.0, actions=[px4_sitl]),
         TimerAction(period=15.0, actions=[es_ekf_node]),
         TimerAction(period=20.0, actions=[v5_mission_commander, rosbag_recorder])
