@@ -22,6 +22,21 @@
 
 ---
 
+## 👶 ELI5: The "Farm Doctor Bird" (For a 5-Year-Old)
+
+**What is this?** We are building a smart robot bird that flies over giant cornfields in Bihar. Sometimes the corn gets sick (it gets too hot, like a fever), but the farmer can't see it. Our robot bird has **magic glasses (Thermal Camera)** that can see the fever. When it finds a sick plant, it carefully flies over and gives it a tiny spray of medicine! 
+
+Sometimes the clouds hide the stars (GPS) that the bird uses to know where it is. To fix this, we gave the bird a superpower called an **"Inner Ear" (Indra-Eye)** so it never loses its balance and always finds its way home.
+
+### 📂 What is inside all these folders? (The Bird's Body Parts)
+*   **`projects/`** 🧠: Where we keep the bird's brains (the Doctor Brain and the Inner Ear Brain).
+*   **`shared_libs/`** 🗣️: The "words" the bird uses to talk between its brain and its body.
+*   **`assets/`** 🎮: The video game world! We built a fake cornfield inside the computer.
+*   **`docker/`** 🪄: The "Magic Box." We put all the bird's code in this box so it always works perfectly on any computer.
+*   **`reports/`** & **`SUBMISSION_PACKAGE_MARCH_2026/`** 📚: The "Report Cards" showing the teacher (Professor Mullick) that the bird works!
+
+---
+
 ## 🏗️ The Fortress Architecture
 
 A **Mono-Repo Research Hub** decoupling core infrastructure from mission-specific logic. Strict silo separation ensures reproducibility, immutability, and professional-grade data integrity.
@@ -52,28 +67,26 @@ A **Mono-Repo Research Hub** decoupling core infrastructure from mission-specifi
 
 ---
 
-## 🚀 Golden Demo Run (Supervisor Hardened)
+## 🚀 Golden Demo Run (1-Click Multi-Terminal Dashboard)
 
-The demo is optimized for stability using a **Split-Launch Protocol** to prevent bridge timeouts.
+The demo is optimized for stability using a **Split-Launch Protocol**. To make demonstration to the Ph.D. Committee seamless, we have engineered a single-click interactive dashboard.
 
-### 1. Emergency Restoration
-If the simulation is not visible, run the one-click recovery script:
+### 🎯 Launch the Demo Dashboard
+Open exactly **one terminal** on your Host machine, navigate to the project folder, and run the master script:
 ```bash
-bash projects/indra_eye/restore_demo.sh
+# Navigate to the workspace
+cd ~/uav_master_hub
+
+# Run the 1-Click Interactive Dashboard
+./launch_fortress_demo.sh
 ```
 
-### 2. Manual Verification
-- **Gazebo**: Check the landing pad for the `agri_hexacopter_drone`.
-- **QGroundControl**: Confirm "Ready for Takeoff" heartbeats.
-- **Diagnostics**:
-```bash
-docker exec uav_hub_golden bash -c "source /root/startup.sh && ros2 topic echo /indra_eye/diagnostics"
-```
-
-### 3. GPS Denial Proof
-```bash
-docker exec uav_hub_golden bash -c "source /root/startup.sh && ros2 topic pub -1 /indra_eye/simulate_gps_denial std_msgs/msg/Bool '{data: true}'"
-```
+**What happens?** 
+1. The script will automatically clean up any old, stuck background containers.
+2. It will open a `gnome-terminal` with **3 dedicated tabs**:
+   - **Tab 1 (Master Brain):** Autonomously boots Gazebo and the V5 Mission Commander.
+   - **Tab 2 (Inner Ear):** Listens to the $SO(3)$ EKF variance data.
+   - **Tab 3 (Supervisior Override):** Provides a large, interactive `[ENTER]` button to instantly kill the GPS satellites and trigger the `SLAM_MODE` fallback mid-flight.
 
 ---
 

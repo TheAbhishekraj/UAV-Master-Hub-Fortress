@@ -38,7 +38,8 @@ def generate_launch_description():
         output='screen'
     )
 
-    # 3. Manually Spawn the Drone (Bypasses Spawner Timeout)
+    # 3. Manually Spawn the Hexacopter Drone
+    # This explicit service call guarantees we only get our custom Agri-Hexacopter.
     spawn_cmd = [
         'gz', 'service', '-s', '/world/bihar_maize/create',
         '--reqtype', 'gz.msgs.EntityFactory',
@@ -54,10 +55,12 @@ def generate_launch_description():
     )
 
     # 4. Start PX4 in STANDALONE mode
+    # Using gz_x500 with STANDALONE=1 ensures PX4 provides the flight controller 
+    # hooks without spawning a second generic quadcopter into the world.
     px4_env_standalone = px4_env.copy()
     px4_env_standalone['PX4_GZ_STANDALONE'] = '1'
     px4_sitl = ExecuteProcess(
-        cmd=['make', 'px4_sitl', 'gz_standard_vtol'],
+        cmd=['make', 'px4_sitl', 'gz_x500'],
         cwd='/root/PX4-Autopilot',
         env=px4_env_standalone,
         name='px4_sitl',

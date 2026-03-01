@@ -100,11 +100,12 @@ I monitored the container execution and here is what happened step-by-step:
 
 You can now confidently demonstrate the simulation to Professor Mullick by triggering the fixed magic button:
 ```bash
-docker exec -it uav_hub_golden bash -c "source /root/startup.sh && \
-source /tmp/fortress_build/install/setup.bash && \
-source /root/uav_master_hub/projects/indra_eye/install/setup.bash && \
-ros2 launch /root/uav_master_hub/projects/indra_eye/src/indra_eye_sim/launch/master_fortress_launch.py"
+# Simply open your Host terminal and run:
+cd ~/uav_master_hub
+./launch_fortress_demo.sh
 ```
+
+This master click opens a multi-tab dashboard automatically! It launches the Brain, starts listening to the Inner Ear, and even gives you a shiny `[ENTER]` button to kill the GPS mid-flight!
 
 Everything is robust, verified, and sealed. Best of luck on your PhD Defense! Jai Hind! 🇮🇳 🏆
 
