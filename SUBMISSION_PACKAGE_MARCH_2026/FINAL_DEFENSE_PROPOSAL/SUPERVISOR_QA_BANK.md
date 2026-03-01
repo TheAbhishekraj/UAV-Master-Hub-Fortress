@@ -26,8 +26,8 @@ This document prepares the candidate for 20 rigorous questions that the supervis
 **A:** This is the 15-dimensional error state vector. We estimate errors in position ($\delta \mathbf{p}$), velocity ($\delta \mathbf{v}$), orientation ($\delta \boldsymbol{\theta}$), accelerometer bias ($\delta \mathbf{a}_b$), and gyroscope bias ($\delta \boldsymbol{\omega}_b$). Accurately tracking the biases is what prevents drift when the GPS is denied.
 
 ## Simulation vs. Reality (The "High Bid")
-**Q8: If this works perfectly in SITL, why do you need ₹2,00,200 for a Jetson Orin Nano and Livox Lidar?**
-**A:** "Sir, in a controlled lab, simulated time is infinite. In the riverine terrain of Bihar, computational latency kills. A basic flight controller cannot run the $SO(3)$ ES-EKF math within the 100ms real-time safety window. The Jetson Orin Nano is required to process the 'Inner Ear' math before the drone hits a tree."
+**Q8: If this works perfectly in SITL, why do you need to jump from 2 lacs to 5 lacs for a PC?**
+**A:** "Sir, our 92% AI F1-Score was achieved in a controlled environment. As we move to real-world Bihar terrains, the 'Visual Noise' from dense canopies increases exponentially. To prevent 'Service Call Timeouts' and catastrophic gimbal-lock during 200Hz EKF updates, we need the multi-GPU throughput of a dedicated workstation. This funding isn't for a computer; it's the Flight Safety Insurance for Phase 3."
 
 **Q9: Why Livox Mid-360 over standard stereo cameras like Intel RealSense?**
 **A:** The high-humidity environment of Bihar causes severe lens fogging, and the intense Indian sun causes extreme glare, rendering optical VIO useless. The Livox Mid-360 uses non-repetitive scanning LiDAR, which is immune to glare and ambient lighting, ensuring consistent obstacle avoidance.

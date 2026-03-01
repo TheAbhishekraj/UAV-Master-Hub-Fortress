@@ -1,0 +1,32 @@
+\documentclass[aspectratio=169, xcolor=table]{beamer}
+\usetheme{Madrid}
+\usecolortheme{whale}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{colortbl}
+
+\begin{document}
+
+\begin{frame}{Computational Latency vs. Economic Risk}
+    \textbf{The Reality of Real-Time Navigation in Diara Terrains}
+    
+    \vspace{0.3cm}
+    \begin{center}
+    \begin{tabular}{|l|c|c|c|}
+    \hline
+    \rowcolor{blue!20}
+    \textbf{Infrastructure} & \textbf{Load Time} & \textbf{EKF Latency} & \textbf{Crop/Flight Risk} \\
+    \hline
+    Standard Pixhawk / Mini-PC & $\sim$3 Minutes & > 100ms & \color{red}\textbf{Critical (Gimbal Lock/Crash)} \\
+    \hline
+    \textbf{Dual RTX 4090 Workstation} & \textbf{< 30 Seconds} & \textbf{< 10ms} & \color{green}\textbf{Zero (Real-Time Safety)} \\
+    \hline
+    \end{tabular}
+    \end{center}
+    
+    \vspace{0.3cm}
+    \textit{Conclusion: A 3-minute local-compute bottleneck directly causes Service Call Timeouts during flight, risking the physical drone and failing to deliver the \textcurrency 10,200/ha savings to the farmer.}
+\end{frame}
+
+\end{document}

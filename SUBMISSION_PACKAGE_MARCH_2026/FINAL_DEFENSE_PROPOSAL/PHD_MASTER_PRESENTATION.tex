@@ -136,12 +136,17 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Slide 14: The "High Bid" Funding Proposal}
-    \textbf{The Requirement:} To ensure our 'Inner Ear' math finishes computing before the drone hits a tree, we require a \textbf{\textcurrency 2,00,200} provision block.
-    \begin{itemize}
-        \item \textbf{NVIDIA Jetson Orin Nano:} Required for real-time edge processing of the ES-EKF without saturating flight controllers.
-        \item \textbf{Livox Mid-360 Lidar:} Required for accurate 3D obstacle avoidance where RGB/Thermal cameras fail due to severe glare.
-    \end{itemize}
+\begin{frame}{Research Infrastructure: Phase 3 HITL Transition}
+    \textbf{Objective:} Scaling from Digital Twin to High-Fidelity Hardware-in-the-Loop.
+    \begin{block}{The 5 Lac (\textcurrency 5,00,000) Infrastructure Requirement}
+        \begin{itemize}
+            \item \textbf{High-Compute Workstation:} Dual RTX 4090 GPUs for parallelizing the \textbf{92\% F1-Score} AI training cycle.
+            \item \textbf{Real-Time Constraints:} Ensuring $SO(3)$ manifold state estimation finishes within the <10ms safety window:
+            $$\delta \mathbf{x} = [\delta \mathbf{p}, \delta \mathbf{v}, \delta \boldsymbol{\theta}, \delta \mathbf{a}_b, \delta \boldsymbol{\omega}_b]^\top$$
+            \item \textbf{Lidar/Vision Fusion:} Validating the 0.031m Z-variance in rugged Bihar terrains.
+        \end{itemize}
+    \end{block}
+    \textit{Justification: Current hardware limits inhibit the simultaneous execution of V5 Brain logic and high-density world physics.}
 \end{frame}
 
 \begin{frame}{Slide 15: Conclusion}

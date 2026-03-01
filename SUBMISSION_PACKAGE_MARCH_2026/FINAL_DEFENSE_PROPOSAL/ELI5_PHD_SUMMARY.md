@@ -11,7 +11,16 @@ Imagine you have a **big, big farm** with lots and lots of maize plants — like
 
 ---
 
-## The 5 Parts of My Flying Doctor
+## 👶 The "Farm Doctor" ELI5 (The Kid-Logic Pitch)
+"Abhishek, imagine our Doctor Bird is getting smarter.
+The bird used to have a small brain that took 3 minutes to wake up.
+With the 5 Lac Brain, the bird wakes up in seconds!
+It can see 100 plants at the same time and remember exactly where the 'sick' corn is, even when the stars go dark.
+It saves the farmer enough money (₹10,200!) to buy treats for everyone."
+
+---
+
+## 🧩 The 5 Parts of My Flying Doctor
 
 ### 1. 🐦 The Bird (The Drone)
 This is like a **robot dragonfly** with 6 wings (propellers). It flies by itself — nobody needs to hold a remote control. It knows where to go, how high to fly, and when to come back home.
