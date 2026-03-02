@@ -96,8 +96,8 @@ struct IMUNoiseParams {
   // Default values for MPU-9250 (typical tactical-grade IMU)
   // Tuned for V4 GPS-Denied Navigation to keep Z variance < 0.05m
   IMUNoiseParams()
-      : accel_noise_density(
-            0.0005), // Reduced to trust IMU/VIO more for altitude
+      : accel_noise_density(0.00025), // Reduced by 50% to resolve hover
+                                      // oscillations and trust IMU more
         gyro_noise_density(0.00015),  // 0.15 deg/s/√Hz
         accel_random_walk(0.0003),    // 300 μg/√Hz
         gyro_random_walk(0.000025) {} // 0.0025 deg/s/√Hz

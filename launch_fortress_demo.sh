@@ -27,7 +27,7 @@ echo "[3/3] Booting Golden Image Terminals..."
 # This prevents GNOME tab-parsing errors and ensures every tool has dedicated screen space.
 
 echo "[3/4] Launching Master Brain..."
-gnome-terminal --title="🧠 Master Brain (Simulation)" -- bash -c "echo -e '\e[1;36m=== MASTER BRAIN LAUNCH ===\e[0m'; docker exec uav_hub_golden bash -c 'source /root/startup.sh && source /tmp/fortress_build/install/setup.bash && source /root/uav_master_hub/projects/indra_eye/install/setup.bash && ros2 launch /root/uav_master_hub/projects/indra_eye/src/indra_eye_sim/launch/master_fortress_launch.py'; exec bash" &
+gnome-terminal --title="🧠 Master Brain (Simulation)" -- bash -c "echo -e '\e[1;36m=== MASTER BRAIN LAUNCH ===\e[0m'; xhost +local:docker >/dev/null 2>&1 || true; docker exec -e DISPLAY=\$DISPLAY -e QT_X11_NO_MITSHM=1 uav_hub_golden bash -c 'source /root/startup.sh && source /tmp/fortress_build/install/setup.bash && source /root/uav_master_hub/projects/indra_eye/install/setup.bash && ros2 launch /root/uav_master_hub/projects/indra_eye/src/indra_eye_sim/launch/master_fortress_launch.py'; exec bash" &
 sleep 3
 
 echo "[4/4] Launching Supervisor Dashboards..."
