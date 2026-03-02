@@ -1,73 +1,24 @@
-# React + TypeScript + Vite
+# 🎛️ Athena UI: Unified Flight Readiness Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The **Athena UI** is a world-class, React-based (Next.js/Vite) graphical command center designed specifically for the UAV Master Hub Fortress Architecture. It serves as the single "pane-of-glass" replacement for fragmented terminal diagnostics and standard QGroundControl telemetry, tailored for autonomous Phase 2 (GPS-Denied) operations.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The dashboard is structured into a 4-Quadrant tactical layout featuring premium glassmorphism, neon vector accents, and CSS-driven micro-animations:
 
-## React Compiler
+- **Quad 1 (Inner Ear Diagnostic):** Live visual telemetry tracking absolute system stability. Features a dynamic Z-Variance confidence gauge, active state arrays for GNSS/VIO sensor fusion locks, and an animated ES-EKF IMU bias sparkline tracking system health at 400Hz.
+- **Quad 2 (Auth Matrix):** A Go/No-Go array simulating real-world physical checklists. It visually polls power levels, multi-node synchronization, spoofing variance detection, and Geofence bounds before allowing the user to explicitly "Authorize Liftoff".
+- **Quad 3 (Tactical Radar Map):** A deep, high-tech map representation of the A* sweep grid. Replaces simple lines with glowing vectors, a translucent Geofence bounds box, pulsing hit-markers for thermal anomalies, and a visualization of the 0.92% Positional Drift shell during simulated Electronic Warfare.
+- **Quad 4 (Execution Pipeline):** Tracks total mission yield via tiered, animated gradient progress bars. Displays real-time tactical anomaly counts and features the glowing, high-contrast "Zeus Override" button for forcing an immediate Return-To-Launch via LiDAR retracing.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Quick Start (Localhost Server)
 
-## Expanding the ESLint configuration
+Athena UI runs on Vite as a standalone React module:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cd projects/athena_ui
+npm install
+npm run dev -- --host
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Once running, navigate to `http://localhost:5174/` or the provided local IP in your browser to view the Command Center!

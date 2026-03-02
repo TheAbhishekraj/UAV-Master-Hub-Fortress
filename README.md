@@ -48,6 +48,7 @@ A **Mono-Repo Research Hub** decoupling core infrastructure from mission-specifi
 | `/shared_libs` | Global message definitions (`px4_msgs`, `agri_msgs`) and shared tools. |
 | `/projects/thermal_hexacopter` | **Phase 1**: Autonomous Thermal-Imaging mission (AI Doctor). |
 | `/projects/indra_eye` | **Phase 2**: GPS-Denied Navigation using SO(3) Error-State EKF. |
+| `/projects/athena_ui` | **World-Class Dashboard**: Unified Flight Readiness UI Command Center. |
 | `/assets` | Digital Twins: Gazebo worlds (`bihar_maize.sdf`) and UAV models. |
 | `/reports` | Sealed Academic Evidence, System Audits, and Defense materials. |
 | `/docker` | Immutable reproducible environment (Golden Image v4.0). |
